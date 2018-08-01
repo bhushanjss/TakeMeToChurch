@@ -8,7 +8,7 @@ import {
 
 import { Button, Card, CardSection, Input, Spinner } from './common';
 import { emailChange, passwordChange, resetLoginForm, loginUser,
-   createUser, toggleAccount, confirmPasswordChange } from '../actions';
+   createUser, toggleAccount, confirmPasswordChange } from '../actions/forms';
 
 class LoginForm extends Component {
 
