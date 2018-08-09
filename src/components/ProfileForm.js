@@ -1,16 +1,79 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { View, ScrollView, StyleSheet } from 'react-native';
 import { Input, Icon, Button, CheckBox } from 'react-native-elements';
+import { firstNameChange, lastNameChange, phoneNumberChange, profileStreetChange,
+  profileAptChange, profileCityChange, profileStateChange, profileZipChange,
+  carModelChange, carSeatsChange, isProfileCheckboxChanged } from '../actions/forms';
 
 import { Card, CardSection } from './common';
 
 class ProfileForm extends Component {
 
-  renderform() {
-
+  firstNameChange(text) {
+    this.props.firstNameChange(text);
   }
+  lastNameChange(text) {
+    this.props.lastNameChange(text);
+  }
+  phoneNumberChange(text) {
+    this.props.phoneNumberChange(text);
+  }
+  profileStreetChange(text) {
+    this.props.profileStreetChange(text);
+  }
+  profileAptChange(text) {
+    this.props.profileAptChange(text);
+  }
+  profileCityChange(text) {
+    this.props.profileCityChange(text);
+  }
+  profileStateChange(text) {
+    this.props.profileStateChange(text);
+  }
+  profileZipChange(text) {
+    this.props.profileZipChange(text);
+  }
+  carModelChange(text) {
+    this.props.carModelChange(text);
+  }
+  carSeatsChange(text) {
+    this.props.carSeatsChange(text);
+  }
+  checkboxChanged() {
+    this.props.isProfileCheckboxChanged(!this.props.isChecked);
+  }
+
+  showCarSection() {
+    if (this.props.isChecked) {
+      return (
+        <View>
+        <CardSection>
+        <Input
+          placeholder='Car Model'
+          inputContainerStyle={styles.inputContainerStyle}
+          leftIcon={<Icon name='train' size={24} color='black' />}
+          onChangeText={this.carModelChange.bind(this)}
+          value={this.props.carModel}
+        />
+        </CardSection>
+        <CardSection>
+        <Input
+          placeholder='No of Seats'
+          inputContainerStyle={styles.inputContainerStyle}
+          leftIcon={<Icon name='event' size={24} color='black' />}
+          onChangeText={this.carSeatsChange.bind(this)}
+          value={this.props.carSeats}
+        />
+        </CardSection>
+        </View>
+      );
+    }
+  }
+
   render() {
-    let isChecked = false;
+    const { firstName, lastName, phoneNumber, street, apt, city, state, zip,
+      isChecked } = this.props;
     return (
       <ScrollView>
       <Card >
@@ -19,6 +82,8 @@ class ProfileForm extends Component {
         placeholder='First Name'
         inputContainerStyle={styles.inputContainerStyle}
         leftIcon={<Icon name='person' size={24} color='black' />}
+        onChangeText={this.firstNameChange.bind(this)}
+        value={firstName}
       />
       </CardSection>
       <CardSection>
@@ -26,6 +91,8 @@ class ProfileForm extends Component {
         placeholder='Last Name'
         inputContainerStyle={styles.inputContainerStyle}
         leftIcon={<Icon name='person' size={24} color='black' />}
+        onChangeText={this.lastNameChange.bind(this)}
+        value={lastName}
       />
       </CardSection>
       <CardSection>
@@ -34,6 +101,8 @@ class ProfileForm extends Component {
         keyboardType='phone-pad'
         inputContainerStyle={styles.inputContainerStyle}
         leftIcon={<Icon name='person' size={24} color='black' />}
+        onChangeText={this.phoneNumberChange.bind(this)}
+        value={phoneNumber}
       />
       </CardSection>
       <CardSection>
@@ -41,6 +110,8 @@ class ProfileForm extends Component {
         placeholder='Street'
         inputContainerStyle={styles.inputContainerStyle}
         leftIcon={<Icon name='home' size={24} color='black' />}
+        onChangeText={this.profileStreetChange.bind(this)}
+        value={street}
       />
       </CardSection>
       <CardSection>
@@ -48,6 +119,8 @@ class ProfileForm extends Component {
         placeholder='Apartment/Unit'
         inputContainerStyle={styles.inputContainerStyle}
         leftIcon={<Icon name='home' size={24} color='black' />}
+        onChangeText={this.profileAptChange.bind(this)}
+        value={apt}
       />
       </CardSection>
       <CardSection>
@@ -55,6 +128,8 @@ class ProfileForm extends Component {
         placeholder='City'
         inputContainerStyle={styles.inputContainerStyle}
         leftIcon={<Icon name='home' size={24} color='black' />}
+        onChangeText={this.profileCityChange.bind(this)}
+        value={city}
       />
       </CardSection>
       <CardSection>
@@ -62,6 +137,8 @@ class ProfileForm extends Component {
         placeholder='State'
         inputContainerStyle={styles.inputContainerStyle}
         leftIcon={<Icon name='home' size={24} color='black' />}
+        onChangeText={this.profileStateChange.bind(this)}
+        value={state}
       />
       </CardSection>
       <CardSection>
@@ -69,47 +146,46 @@ class ProfileForm extends Component {
         placeholder='ZIP'
         inputContainerStyle={styles.inputContainerStyle}
         leftIcon={<Icon name='home' size={24} color='black' />}
+        onChangeText={this.profileZipChange.bind(this)}
+        value={zip}
       />
       </CardSection>
       <CardSection>
       <View style={{ flex: 1 }}>
-        <CheckBox containerStyle={{ backgroundColor: '#fff', flex: 1, flexDirection: 'row' }} title='Would you like to Drive?' checked={isChecked} />
+        <CheckBox containerStyle={{ backgroundColor: '#fff', flex: 1, flexDirection: 'row' }}
+         title='Would you like to Drive?' checked={isChecked}
+         onPress={this.checkboxChanged.bind(this)}
+        />
       </View>
       </CardSection>
-      <CardSection>
-      <Input
-        placeholder='Car Model'
-        inputContainerStyle={styles.inputContainerStyle}
-        leftIcon={<Icon name='train' size={24} color='black' />}
-      />
-      </CardSection>
-      <CardSection>
-      <Input
-        placeholder='No of Seats'
-        inputContainerStyle={styles.inputContainerStyle}
-        leftIcon={<Icon name='event_seat' size={24} color='black' />}
-      />
-      </CardSection>
+      {this.showCarSection()}
       <CardSection>
       <View style={{ flex: 1 }}>
       <Button
-        icon={
-          <Icon
-            name='save'
-            size={24}
-            color='white'
-          />
-        }
+        icon={<Icon name='save' size={24} color='white' />}
         title='SAVE'
       />
       </View>
-
       </CardSection>
       </Card>
       </ScrollView>
     );
   }
 }
+
+const mapStateToProps = state => ({
+  firstName: state.profileForm.firstName,
+  lastName: state.profileForm.lastName,
+  phoneNumber: state.profileForm.phoneNumber,
+  street: state.profileForm.street,
+  apt: state.profileForm.apt,
+  city: state.profileForm.city,
+  state: state.profileForm.state,
+  zip: state.profileForm.zip,
+  carModel: state.profileForm.carModel,
+  carSeats: state.profileForm.carSeats,
+  isChecked: state.profileForm.isChecked
+});
 
 const styles = StyleSheet.create({
   inputContainerStyle: {
@@ -118,4 +194,16 @@ const styles = StyleSheet.create({
 });
 
 
-export default ProfileForm;
+export default connect(mapStateToProps, {
+  firstNameChange,
+  lastNameChange,
+  phoneNumberChange,
+  profileStreetChange,
+  profileAptChange,
+  profileCityChange,
+  profileStateChange,
+  profileZipChange,
+  carModelChange,
+  carSeatsChange,
+  isProfileCheckboxChanged
+})(ProfileForm);
