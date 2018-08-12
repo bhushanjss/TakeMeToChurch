@@ -1,4 +1,4 @@
-//Login Form
+//login form
 export const EMAIL_CHANGE = 'email_change';
 export const PASSWORD_CHANGE = 'password_change';
 export const CONFIRM_PASSWORD_CHANGE = 'confirm_password_change';
@@ -10,7 +10,7 @@ export const CREATE_USER = 'create_user';
 export const CREATE_USER_SUCCESS = 'create_user';
 export const TOGGLE_ACCOUNT = 'toggle_account';
 
-//create profile forms
+//create profile form
 export const FIRST_NAME_CHANGE = 'first_name_change';
 export const LAST_NAME_CHANGE = 'last_name_change';
 export const PHONE_NUMBER_CHANGE = 'phone_number_change';
@@ -25,3 +25,21 @@ export const PROFILE_CHECKBOX_CHECKED = 'profile_checkbox_checked';
 export const SAVE_PROFILE = 'save_profile';
 export const SAVE_PROFILE_SUCCESS = 'save_profile_sucess';
 export const SAVE_PROFILE_FAILED = 'save_profile_failed';
+
+//profile church form
+
+
+//add church form
+export const CHURCH_NAME_CHANGE = 'church_name';
+export const CHURCH_PHONE_NUMBER_CHANGE = 'church_phone_number_change';
+export const CHURCH_STREET_CHANGE = 'church_street_change';
+export const CHURCH_CITY_CHANGE = 'church_city_change';
+export const CHURCH_STATE_CHANGE = 'church_state_change';
+export const CHURCH_ZIP_CHANGE = 'church_zip_change';
+export const MASS_TIME_CHANGE = 'mass_time_change';
+export const ADD_MASS_TIME = 'add_mass_time';
+export const SAVE_MASS_TIME = 'save_mass_time';
+export const DELETE_MASS_TIME = 'delete_mass_time';
+export const SAVE_CHURCH = 'save_church';
+export const SAVE_CHURCH_SUCCESS = 'save_church_success';
+export const SAVE_CHURCH_FAILED = 'save_church_failed';
