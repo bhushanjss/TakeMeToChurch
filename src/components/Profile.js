@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import { View, ScrollView } from 'react-native';
+import { connect } from 'react-redux';
+import _ from 'lodash';
 import { Card, Avatar, Text, Icon } from 'react-native-elements';
-
+import { loadProfile } from '../actions/entities';
 
 class Profile extends Component {
 
-  renderform() {
-
+  componentWillMount() {
+    this.props.loadProfile();
   }
+
   render() {
+    const { firstName, lastName, phoneNumber, street, apt, city, state, zip,
+      carModel, carSeats, isChecked
+    } = this.props;
     return (
       <ScrollView>
         <Card>
@@ -22,19 +28,19 @@ class Profile extends Component {
           />
         </View>
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', paddingTop: 10 }}>
-          <Text h3>Katie Singh</Text>
+          <Text h3>{firstName} {lastName}</Text>
         </View>
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', padding: 10 }}>
           <Icon name='phone' />
-          <Text style={{ paddingLeft: 30 }}>+1 123 456 7890</Text>
+          <Text style={{ paddingLeft: 30 }}>{phoneNumber}</Text>
         </View>
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', padding: 10 }}>
           <Icon name='home' />
           <View style={{ paddingLeft: 30 }}>
-            <Text>3219 W Wilson Ave</Text>
-            <Text>Apt 2</Text>
-            <Text>Chicago</Text>
-            <Text>IL 60625</Text>
+            <Text>{street}</Text>
+            <Text>{apt}</Text>
+            <Text>{city}</Text>
+            <Text>{state} {zip}</Text>
           </View>
         </View>
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', padding: 10 }}>
@@ -51,14 +57,8 @@ class Profile extends Component {
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', padding: 10 }}>
           <Icon name='train' />
           <View style={{ paddingLeft: 30 }}>
-            <Text>Cadillac ATS</Text>
-            <Text>4 Seats</Text>
-          </View>
-        </View>
-        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', padding: 10 }}>
-          <Icon name='event' />
-          <View style={{ paddingLeft: 30 }}>
-            <Text>Cadillac ATS</Text>
+            <Text>{carModel}</Text>
+            <Text>{carSeats} Seats</Text>
           </View>
         </View>
         </Card>
@@ -67,6 +67,24 @@ class Profile extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  console.log(state);
+  const profile = _.values(state.entities.profile)[0];
+  return {
+    firstName: profile.firstName,
+    lastName: profile.lastName,
+    phoneNumber: profile.phoneNumber,
+    street: profile.street,
+    apt: profile.apt,
+    city: profile.city,
+    state: profile.state,
+    zip: profile.zip,
+    carModel: profile.carModel,
+    carSeats: profile.carSeats,
+    isChecked: profile.isChecked
+  };
+};
 
-
-export default Profile;
+export default connect(mapStateToProps, {
+loadProfile
+})(Profile);
