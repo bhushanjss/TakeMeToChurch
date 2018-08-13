@@ -7,14 +7,13 @@ import { EMAIL_CHANGE, PASSWORD_CHANGE, CONFIRM_PASSWORD_CHANGE,
   TOGGLE_ACCOUNT, FIRST_NAME_CHANGE, LAST_NAME_CHANGE, PHONE_NUMBER_CHANGE, PROFILE_STREET_CHANGE,
   PROFILE_APT_CHANGE, PROFILE_CITY_CHANGE, PROFILE_STATE_CHANGE, PROFILE_ZIP_CHANGE,
   CAR_MODEL_CHANGE, CAR_SEATS_CHANGE, PROFILE_CHECKBOX_CHECKED, SAVE_PROFILE,
-  SAVE_PROFILE_SUCCESS, SAVE_PROFILE_FAILED, CHURCH_NAME_CHANGE,
-  CHURCH_PHONE_NUMBER_CHANGE, CHURCH_STREET_CHANGE, CHURCH_CITY_CHANGE,
-  CHURCH_STATE_CHANGE, CHURCH_ZIP_CHANGE, MASS_TIME_CHANGE,
-  ADD_MASS_TIME, DELETE_MASS_TIME, SAVE_MASS_TIME, SAVE_CHURCH,
+  SAVE_PROFILE_SUCCESS, SAVE_PROFILE_FAILED, SAVE_DRIVER, SAVE_DRIVER_SUCCESS,
+  SAVE_DRIVER_FAILED, CHURCH_NAME_CHANGE, CHURCH_PHONE_NUMBER_CHANGE,
+  CHURCH_STREET_CHANGE, CHURCH_CITY_CHANGE, CHURCH_STATE_CHANGE, CHURCH_ZIP_CHANGE,
+  MASS_TIME_CHANGE, ADD_MASS_TIME, DELETE_MASS_TIME, SAVE_MASS_TIME, SAVE_CHURCH,
   SAVE_CHURCH_SUCCESS, SAVE_CHURCH_FAILED } from './types';
 
 //login form
-
 export const emailChange = (text) => action(EMAIL_CHANGE, text);
 export const passwordChange = (text) => action(PASSWORD_CHANGE, text);
 export const confirmPasswordChange = (text) => action(CONFIRM_PASSWORD_CHANGE, text);
@@ -40,7 +39,8 @@ export const createUser = ({ email, password }) => (
 
 const loginUserSuccess = (dispatch, user) => {
   dispatch(action(LOGIN_USER_SUCCESS, user));
-  Actions.profile({ type: 'reset' });
+  Actions.profileForm({ type: 'reset' });
+//  Actions.profile({ type: 'reset' });
 };
 
 const createUserSuccess = (dispatch, user) => {
@@ -64,6 +64,27 @@ export const profileZipChange = (text) => action(PROFILE_ZIP_CHANGE, text);
 export const carModelChange = (text) => action(CAR_MODEL_CHANGE, text);
 export const carSeatsChange = (text) => action(CAR_SEATS_CHANGE, text);
 export const isProfileCheckboxChanged = (val) => action(PROFILE_CHECKBOX_CHECKED, val);
+
+export const saveProfile = (profile, driver, isChecked) => (
+  (dispatch) => {
+    const { currentUser } = firebase.auth();
+    dispatch(action(SAVE_PROFILE));
+    firebase.database().ref(`/profiles/${currentUser.uid}`)
+    .push(profile)
+    .on('value', snapshot => {
+      dispatch(action(SAVE_PROFILE_SUCCESS, snapshot.val()));
+      if (isChecked) {
+        dispatch(action(SAVE_DRIVER));
+        firebase.database().ref('/drivers')
+        .push({ ...driver, profileId: snapshot.key, userId: currentUser.uid })
+        .on('value', snap => {
+          dispatch(action(SAVE_DRIVER_SUCCESS, snap.val()));
+        });
+      }
+      Actions.profile({ type: 'reset' });
+    });
+  }
+);
 
 //add church form
 export const churchNameChange = text => action(CHURCH_NAME_CHANGE, text);

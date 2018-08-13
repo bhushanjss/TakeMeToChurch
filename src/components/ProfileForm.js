@@ -4,7 +4,8 @@ import { View, ScrollView, StyleSheet } from 'react-native';
 import { Input, Icon, Button, CheckBox } from 'react-native-elements';
 import { firstNameChange, lastNameChange, phoneNumberChange, profileStreetChange,
   profileAptChange, profileCityChange, profileStateChange, profileZipChange,
-  carModelChange, carSeatsChange, isProfileCheckboxChanged } from '../actions/forms';
+  carModelChange, carSeatsChange, isProfileCheckboxChanged,
+  saveProfile } from '../actions/forms';
 
 import { Card, CardSection } from './common';
 
@@ -42,6 +43,19 @@ class ProfileForm extends Component {
   }
   checkboxChanged() {
     this.props.isProfileCheckboxChanged(!this.props.isChecked);
+  }
+
+  saveProfile() {
+    const { firstName, lastName, phoneNumber, street, apt, city, state, zip,
+      isChecked, carModel, carSeats } = this.props;
+      if (isChecked) {
+        this.props.saveProfile({ firstName, lastName, phoneNumber, street, apt,
+        city, state, zip, isChecked }, { firstName, lastName, phoneNumber, zip, carModel,
+          carSeats, isChecked }, isChecked);
+      } else {
+        this.props.saveProfile({ firstName, lastName, phoneNumber, street, apt,
+        city, state, zip, isChecked });
+      }
   }
 
   showCarSection() {
@@ -164,6 +178,7 @@ class ProfileForm extends Component {
       <Button
         icon={<Icon name='save' size={24} color='white' />}
         title='SAVE'
+        onPress={this.saveProfile.bind(this)}
       />
       </View>
       </CardSection>
@@ -205,5 +220,6 @@ export default connect(mapStateToProps, {
   profileZipChange,
   carModelChange,
   carSeatsChange,
-  isProfileCheckboxChanged
+  isProfileCheckboxChanged,
+  saveProfile
 })(ProfileForm);

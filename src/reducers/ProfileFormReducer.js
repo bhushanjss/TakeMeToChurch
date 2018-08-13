@@ -1,7 +1,8 @@
 import { FIRST_NAME_CHANGE, LAST_NAME_CHANGE, PHONE_NUMBER_CHANGE,
   PROFILE_STREET_CHANGE, PROFILE_APT_CHANGE, PROFILE_CITY_CHANGE,
   PROFILE_STATE_CHANGE, PROFILE_ZIP_CHANGE, CAR_MODEL_CHANGE, CAR_SEATS_CHANGE,
-  PROFILE_CHECKBOX_CHECKED
+  PROFILE_CHECKBOX_CHECKED, SAVE_PROFILE, SAVE_PROFILE_SUCCESS,
+  SAVE_PROFILE_FAILED, SAVE_DRIVER, SAVE_DRIVER_SUCCESS, SAVE_DRIVER_FAILED
   } from '../actions/forms/types';
 
 const INITIAL_STATE = {
@@ -44,6 +45,18 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, carSeats: action.payload };
     case PROFILE_CHECKBOX_CHECKED:
       return { ...state, isChecked: action.payload };
+    case SAVE_PROFILE:
+      return { ...state, loading: true };
+    case SAVE_PROFILE_SUCCESS:
+      return { ...state, loading: false };
+    case SAVE_PROFILE_FAILED:
+      return { ...state, loading: false, error: action.payload };
+    case SAVE_DRIVER:
+      return { ...state, loading: true };
+    case SAVE_DRIVER_SUCCESS:
+      return { ...state, loading: false };
+    case SAVE_DRIVER_FAILED:
+      return { ...state, loading: false, error: action.payload };
     default:
       return state;
   }

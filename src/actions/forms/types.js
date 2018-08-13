@@ -25,6 +25,9 @@ export const PROFILE_CHECKBOX_CHECKED = 'profile_checkbox_checked';
 export const SAVE_PROFILE = 'save_profile';
 export const SAVE_PROFILE_SUCCESS = 'save_profile_sucess';
 export const SAVE_PROFILE_FAILED = 'save_profile_failed';
+export const SAVE_DRIVER = 'save_driver';
+export const SAVE_DRIVER_SUCCESS = 'save_driver_success';
+export const SAVE_DRIVER_FAILED = 'save_driver_failed';
 
 //profile church form
 
