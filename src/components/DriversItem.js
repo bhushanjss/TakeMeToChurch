@@ -1,11 +1,24 @@
 import React, { Component } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, Linking } from 'react-native';
 import { Avatar, Text, Icon } from 'react-native-elements';
 import Autolink from 'react-native-autolink';
 import { Card, CardSection } from './common';
 
 
 class DriversItem extends Component {
+
+  openEmail() {
+    Linking.openURL(`mailto:${this.props.driver.email}`);
+  }
+
+  openPhoneCall() {
+    Linking.openURL(`tel:${this.props.driver.phoneNumber}`);
+  }
+
+  openPhoneMsg() {
+    Linking.openURL(`sms:${this.props.driver.phoneNumber}`);
+  }
+
   render() {
     const { firstName, lastName, phoneNumber, carModel, carSeats, isChecked } = this.props.driver;
     return (
@@ -28,13 +41,9 @@ class DriversItem extends Component {
                 <Text>{carSeats} Seats</Text>
               </View>
               <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Icon name='email' />
-                <Icon name='message' >
-                  <Autolink text='sms:{phoneNumber}' />
-                </Icon>
-                <Icon name='phone'>
-                  <Autolink text='tel:{phoneNumber}' />
-                </Icon>
+                <Icon name='email' onPress={this.openEmail.bind(this)} />
+                <Icon name='message' onPress={this.openPhoneMsg.bind(this)} />
+                <Icon name='phone' onPress={this.openPhoneCall.bind(this)} />
               </View>
             </View>
           </View>
