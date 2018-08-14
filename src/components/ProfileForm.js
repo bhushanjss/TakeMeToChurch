@@ -50,8 +50,8 @@ class ProfileForm extends Component {
       isChecked, carModel, carSeats } = this.props;
       if (isChecked) {
         this.props.saveProfile({ firstName, lastName, phoneNumber, street, apt,
-        city, state, zip, isChecked }, { firstName, lastName, phoneNumber, zip, carModel,
-          carSeats, isChecked }, isChecked);
+        city, state, zip, carModel, carSeats, isChecked }, { firstName, lastName,
+        phoneNumber, zip, carModel, carSeats, isChecked }, isChecked);
       } else {
         this.props.saveProfile({ firstName, lastName, phoneNumber, street, apt,
         city, state, zip, isChecked });

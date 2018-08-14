@@ -14,8 +14,8 @@ const RouterComponent = () => (
       <Scene key="profileForm" component={ProfileForm} title="Create Profile" />
       <Scene key="profile" component={Profile} title="Profile" />
       <Scene key="profileChurchForm" component={ProfileChurchForm} title="Manage Church" />
-      <Scene key="churchForm" component={AddChurchForm} title="Add Church" initial />
-      <Scene key="Drivers" component={Drivers} title="Drivers Nearby" />
+      <Scene key="churchForm" component={AddChurchForm} title="Add Church" />
+      <Scene key="drivers" component={Drivers} title="Drivers Nearby" initial/>
     </Scene>
   </Router>
 );

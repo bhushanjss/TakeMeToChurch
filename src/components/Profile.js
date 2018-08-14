@@ -68,7 +68,6 @@ class Profile extends Component {
 }
 
 const mapStateToProps = state => {
-  console.log(state);
   const profile = _.values(state.entities.profile)[0];
   return {
     firstName: profile.firstName,

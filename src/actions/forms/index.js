@@ -39,8 +39,9 @@ export const createUser = ({ email, password }) => (
 
 const loginUserSuccess = (dispatch, user) => {
   dispatch(action(LOGIN_USER_SUCCESS, user));
-  // Actions.profileForm({ type: 'reset' });
-  Actions.profile({ type: 'reset' });
+  //Actions.profileForm({ type: 'reset' });
+  //Actions.profile({ type: 'reset' });
+  Actions.drivers({ type: 'reset' });
 };
 
 const createUserSuccess = (dispatch, user) => {
