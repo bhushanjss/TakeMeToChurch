@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import { View, Linking } from 'react-native';
 import { Avatar, Text, Icon } from 'react-native-elements';
-import Autolink from 'react-native-autolink';
 import { Card, CardSection } from './common';
 
 
 class DriversItem extends Component {
 
   openEmail() {
-    Linking.openURL(`mailto:${this.props.driver.email}`);
+    const { email } = this.props.driver.email;
+    if (email) {
+       Linking.openURL(`mailto:${email}`);
+     }
   }
 
   openPhoneCall() {
@@ -20,7 +22,7 @@ class DriversItem extends Component {
   }
 
   render() {
-    const { firstName, lastName, phoneNumber, carModel, carSeats, isChecked } = this.props.driver;
+    const { firstName, lastName, carModel, carSeats } = this.props.driver;
     return (
       <Card>
           <CardSection>

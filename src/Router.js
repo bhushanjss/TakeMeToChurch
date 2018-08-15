@@ -10,12 +10,12 @@ import Drivers from './components/Drivers';
 const RouterComponent = () => (
   <Router>
     <Scene key="root">
-      <Scene key="login" component={LoginForm} title="Please Login" />
+      <Scene key="login" component={LoginForm} title="Please Login" initial />
       <Scene key="profileForm" component={ProfileForm} title="Create Profile" />
       <Scene key="profile" component={Profile} title="Profile" />
       <Scene key="profileChurchForm" component={ProfileChurchForm} title="Manage Church" />
       <Scene key="churchForm" component={AddChurchForm} title="Add Church" />
-      <Scene key="drivers" component={Drivers} title="Drivers Nearby" initial/>
+      <Scene key="drivers" component={Drivers} title="Drivers Nearby" />
     </Scene>
   </Router>
 );

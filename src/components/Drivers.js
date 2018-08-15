@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, FlatList, ListView } from 'react-native';
+import { View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Text } from 'react-native-elements';
@@ -13,17 +13,6 @@ class Drivers extends Component {
   componentWillMount() {
     this.props.loadDrivers();
   }
-
-  // componentWillReceiveProps(nextProps) {
-  //   this.createDataSource(nextProps);
-  // }
-  //
-  // createDataSource({ drivers }) {
-  //   const ds = new ListView.DataSource({
-  //     rowHasChanged: (r1, r2) => r1 !== r2
-  //   });
-  //   this.dataSource = ds.cloneWithRows(drivers);
-  // }
 
   renderItem(driver) {
     return <DriversItem driver={driver.item} />;

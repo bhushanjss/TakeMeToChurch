@@ -1,5 +1,8 @@
 import firebase from 'firebase';
+import { Platform } from 'react-native';
 import { Actions } from 'react-native-router-flux';
+import ImagePicker from 'react-native-image-picker';
+import RNFetchBlob from 'react-native-fetch-blob';
 
 import action from '../action';
 import { EMAIL_CHANGE, PASSWORD_CHANGE, CONFIRM_PASSWORD_CHANGE,
@@ -11,7 +14,8 @@ import { EMAIL_CHANGE, PASSWORD_CHANGE, CONFIRM_PASSWORD_CHANGE,
   SAVE_DRIVER_FAILED, CHURCH_NAME_CHANGE, CHURCH_PHONE_NUMBER_CHANGE,
   CHURCH_STREET_CHANGE, CHURCH_CITY_CHANGE, CHURCH_STATE_CHANGE, CHURCH_ZIP_CHANGE,
   MASS_TIME_CHANGE, ADD_MASS_TIME, DELETE_MASS_TIME, SAVE_MASS_TIME, SAVE_CHURCH,
-  SAVE_CHURCH_SUCCESS, SAVE_CHURCH_FAILED } from './types';
+  SAVE_CHURCH_SUCCESS, SAVE_CHURCH_FAILED, UPLOAD_IMAGE, UPLOAD_IMAGE_SUCCESS,
+  UPLOAD_IMAGE_FAILED } from './types';
 
 //login form
 export const emailChange = (text) => action(EMAIL_CHANGE, text);
@@ -40,8 +44,8 @@ export const createUser = ({ email, password }) => (
 const loginUserSuccess = (dispatch, user) => {
   dispatch(action(LOGIN_USER_SUCCESS, user));
   //Actions.profileForm({ type: 'reset' });
-  //Actions.profile({ type: 'reset' });
-  Actions.drivers({ type: 'reset' });
+  Actions.profile({ type: 'reset' });
+  // Actions.drivers({ type: 'reset' });
 };
 
 const createUserSuccess = (dispatch, user) => {
@@ -86,6 +90,49 @@ export const saveProfile = (profile, driver, isChecked) => (
     });
   }
 );
+
+const uploadingImage = (uri, fs, Blob, mime = 'application/octet-stream') => (
+  new Promise((resolve, reject) => {
+    const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
+    const sessionId = new Date().getTime();
+    let uploadBlob = null;
+    const imageRef = firebase.storage().ref('images').child(`${sessionId}`);
+
+    fs.readFile(uploadUri, 'base64')
+      .then((data) => Blob.build(data, { type: `${mime};BASE64` }))
+      .then((blob) => {
+        uploadBlob = blob;
+        return imageRef.put(blob, { contentType: mime });
+      })
+      .then(() => {
+        uploadBlob.close();
+        return imageRef.getDownloadURL();
+      })
+      .then((url) => {
+        resolve(url);
+      })
+      .catch((error) => {
+        reject(error);
+    });
+  })
+);
+
+export const uploadImage = () => {
+  // Prepare Blob support
+  const Blob = RNFetchBlob.polyfill.Blob;
+  const fs = RNFetchBlob.fs;
+  this.window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
+  this.window.Blob = Blob;
+
+  return (dispatch) => {
+    dispatch(action(UPLOAD_IMAGE));
+    ImagePicker.launchImageLibrary({}, response => {
+      uploadingImage(response.uri, fs, Blob)
+        .then(url => dispatch(action(UPLOAD_IMAGE_SUCCESS, url)))
+        .catch(error => dispatch(action(UPLOAD_IMAGE_FAILED, error)));
+    });
+  };
+};
 
 //add church form
 export const churchNameChange = text => action(CHURCH_NAME_CHANGE, text);

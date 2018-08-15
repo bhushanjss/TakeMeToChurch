@@ -4,11 +4,16 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Card, Avatar, Text, Icon } from 'react-native-elements';
 import { loadProfile } from '../actions/entities';
+import { uploadImage } from '../actions/forms';
 
 class Profile extends Component {
 
   componentWillMount() {
     this.props.loadProfile();
+  }
+
+  pickImage() {
+    this.props.uploadImage();
   }
 
   render() {
@@ -22,10 +27,10 @@ class Profile extends Component {
         <Avatar
           size="large"
           rounded
-          source={{uri: "https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg"}}
-          onPress={() => console.log("Works!")}
+          source={{ uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg' }}
+          onPress={this.pickImage.bind(this)}
           activeOpacity={0.7}
-          />
+        />
         </View>
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', paddingTop: 10 }}>
           <Text h3>{firstName} {lastName}</Text>
@@ -85,5 +90,6 @@ const mapStateToProps = state => {
 };
 
 export default connect(mapStateToProps, {
-loadProfile
+loadProfile,
+uploadImage
 })(Profile);

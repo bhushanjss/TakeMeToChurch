@@ -28,6 +28,9 @@ export const SAVE_PROFILE_FAILED = 'save_profile_failed';
 export const SAVE_DRIVER = 'save_driver';
 export const SAVE_DRIVER_SUCCESS = 'save_driver_success';
 export const SAVE_DRIVER_FAILED = 'save_driver_failed';
+export const UPLOAD_IMAGE = 'upload_image';
+export const UPLOAD_IMAGE_SUCCESS = 'upload_image_success';
+export const UPLOAD_IMAGE_FAILED = 'upload_image_failed';
 
 //profile church form
 
