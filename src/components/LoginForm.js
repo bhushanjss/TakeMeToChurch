@@ -12,6 +12,17 @@ import { emailChange, passwordChange, resetLoginForm, loginUser,
 
 class LoginForm extends Component {
 
+   static navigationOptions = {
+    title: 'Login',
+    headerStyle: {
+      backgroundColor: '#f4511e',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  };
+
 	onLoginButtonPress() {
     const { email, password } = this.props;
     this.props.loginUser({ email, password });
