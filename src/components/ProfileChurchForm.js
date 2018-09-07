@@ -7,6 +7,17 @@ import { Card, CardSection } from './common';
 
 class ProfileChurchForm extends Component {
 
+  static navigationOptions = {
+    title: 'Manage Church',
+    headerStyle: {
+      backgroundColor: '#f4511e',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  };
+
   renderform() {
 
   }

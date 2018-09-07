@@ -11,6 +11,17 @@ import { Card, CardSection } from './common';
 
 class ProfileForm extends Component {
 
+  static navigationOptions = {
+    title: 'Create Profile',
+    headerStyle: {
+      backgroundColor: '#f4511e',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  };
+
   firstNameChange(text) {
     this.props.firstNameChange(text);
   }

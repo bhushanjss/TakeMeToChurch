@@ -10,6 +10,17 @@ import { loadDrivers } from '../actions/entities';
 
 class Drivers extends Component {
 
+  static navigationOptions = {
+    title: 'Drivers Nearby',
+    headerStyle: {
+      backgroundColor: '#f4511e',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  };
+
   componentWillMount() {
     this.props.loadDrivers();
   }

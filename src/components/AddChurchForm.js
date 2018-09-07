@@ -11,6 +11,17 @@ saveMassTimeChange, deleteMassTimeChange, saveChurch } from '../actions/forms';
 
 class AddChurchForm extends Component {
 
+ static navigationOptions = {
+    title: 'Add Church',
+    headerStyle: {
+      backgroundColor: '#f4511e',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+  };
+
   churchNameChange(text) {
     this.props.churchNameChange(text);
   }

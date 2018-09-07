@@ -1,9 +1,9 @@
 import firebase from 'firebase';
 import { Platform } from 'react-native';
-import { Actions } from 'react-native-router-flux';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob';
 
+import NavigationService from '../../NavigationService';
 import action from '../action';
 import { EMAIL_CHANGE, PASSWORD_CHANGE, CONFIRM_PASSWORD_CHANGE,
   LOGIN_USER_SUCCESS, LOGIN_USER_FAILED, LOGIN_USER, CREATE_USER, CREATE_USER_SUCCESS,
@@ -43,14 +43,12 @@ export const createUser = ({ email, password }) => (
 
 const loginUserSuccess = (dispatch, user) => {
   dispatch(action(LOGIN_USER_SUCCESS, user));
-  //Actions.profileForm({ type: 'reset' });
-  Actions.profile({ type: 'reset' });
-  // Actions.drivers({ type: 'reset' });
+  NavigationService.navigate('Profile');
 };
 
 const createUserSuccess = (dispatch, user) => {
   dispatch(action(CREATE_USER_SUCCESS, user));
-  Actions.profileForm({ type: 'reset' });
+  NavigationService.navigate('ProfileForm');
 };
 
 const loginUserFailed = (dispatch, error) => (
@@ -86,7 +84,7 @@ export const saveProfile = (profile, driver, isChecked) => (
           dispatch(action(SAVE_DRIVER_SUCCESS, snap.val()));
         });
       }
-      Actions.profile({ type: 'reset' });
+      NavigationService.navigate('Profile');
     });
   }
 );

@@ -8,6 +8,18 @@ import { uploadImage } from '../actions/forms';
 
 class Profile extends Component {
 
+  static navigationOptions = {
+    title: 'Profile',
+    headerStyle: {
+      backgroundColor: '#f4511e',
+    },
+    headerTintColor: '#fff',
+    headerTitleStyle: {
+      fontWeight: 'bold',
+    },
+    drawerLabel: 'Profile',
+  };
+
   componentWillMount() {
     this.props.loadProfile();
   }

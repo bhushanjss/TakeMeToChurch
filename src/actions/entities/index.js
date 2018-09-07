@@ -1,7 +1,7 @@
 import firebase from 'firebase';
-import { Actions } from 'react-native-router-flux';
 
 import action from '../action';
+import NavigationService from '../../NavigationService';
 
 import { LOAD_PROFILE, LOAD_PROFILE_SUCCESS, LOAD_PROFILE_FAILED,
   LOAD_DRIVER, LOAD_DRIVER_SUCCESS, LOAD_DRIVER_FAILED } from './types';
@@ -13,7 +13,7 @@ export const loadProfile = () => (
     firebase.database().ref(`/profiles/${currentUser.uid}`)
     .on('value', snapshot => {
       dispatch(action(LOAD_PROFILE_SUCCESS, snapshot.val()));
-      Actions.profile({ type: 'reset' });
+      NavigationService.navigate('Profile');
     });
   }
 );
