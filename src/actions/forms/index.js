@@ -43,12 +43,12 @@ export const createUser = ({ email, password }) => (
 
 const loginUserSuccess = (dispatch, user) => {
   dispatch(action(LOGIN_USER_SUCCESS, user));
-  NavigationService.navigate('Profile');
+  //NavigationService.navigate('Profile');
 };
 
 const createUserSuccess = (dispatch, user) => {
   dispatch(action(CREATE_USER_SUCCESS, user));
-  NavigationService.navigate('ProfileForm');
+  //NavigationService.navigate('ProfileForm');
 };
 
 const loginUserFailed = (dispatch, error) => (

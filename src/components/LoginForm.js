@@ -6,22 +6,14 @@ import {
   StyleSheet
 } from 'react-native';
 
-import { Button, Card, CardSection, Input, Spinner } from './common';
+import { Button, Icon } from 'react-native-elements';
+import { Card, CardSection, Input, Spinner } from './common';
 import { emailChange, passwordChange, resetLoginForm, loginUser,
    createUser, toggleAccount, confirmPasswordChange } from '../actions/forms';
+import Routes from '../Routes';
+import NavigationService from '../NavigationService';
 
 class LoginForm extends Component {
-
-   static navigationOptions = {
-    title: 'Login',
-    headerStyle: {
-      backgroundColor: '#f4511e',
-    },
-    headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
-  };
 
 	onLoginButtonPress() {
     const { email, password } = this.props;
@@ -49,6 +41,10 @@ class LoginForm extends Component {
     this.props.confirmPasswordChange(text);
   }
 
+  toggleNavigation = () =>  {
+    NavigationService.toggleDrawer();
+  }
+
   renderButton() {
     const { loading, showCreateUser } = this.props;
 
@@ -58,15 +54,15 @@ class LoginForm extends Component {
 
     if (showCreateUser) {
       return (
-        <Button onPress={this.onCreateUserButtonPress.bind(this)}>
-        Create User
-        </Button>
+        <View style={styles.createUserView}>
+          <Button title='Create User' onPress={this.onCreateUserButtonPress.bind(this)} />
+        </View>  
       );
     }
     return (
-      <Button onPress={this.onLoginButtonPress.bind(this)}>
-      Log In
-      </Button>
+      <View style={styles.createUserView}>
+        <Button title='Log In' onPress={this.onLoginButtonPress.bind(this)} />
+       </View> 
     );
   }
 
@@ -81,9 +77,7 @@ class LoginForm extends Component {
           <Text style={styles.createUserViewText}>
             {newAccountMessage}
           </Text>
-          <Button onPress={this.onAccountToggle.bind(this)}>
-            Sign Up
-          </Button>
+          <Button title='Sign Up' onPress={this.onAccountToggle.bind(this)} />
         </View>
       );
     }
@@ -93,9 +87,7 @@ class LoginForm extends Component {
           <Text style={styles.createUserViewText}>
             {alreadySignedUp}
           </Text>
-          <Button onPress={this.onAccountToggle.bind(this)}>
-            Sign In
-          </Button>
+          <Button title='Sing In' onPress={this.onAccountToggle.bind(this)} />
         </View>
       );
     }
@@ -138,31 +130,56 @@ renderPassword() {
     );
   }
 
-	render() {
-    const { email } = this.props;
+  renderDisplay() {
+    const { email, user } = this.props;
+    if(user) {
+      return (
+      <View style={{ flex: 1 }}> 
+        <View style={{ height: 24, marginTop: 24, marginBottom: 4, paddingLeft: 16, alignItems: 'flex-start' }}>   
+          <Button
+            title=''
+            icon={<Icon name='menu' size={24} />}
+            onPress={this.toggleNavigation.bind(this)}
+            />
+         </View> 
+        <View style={{ height:600 }}>        
+          <Routes />
+         </View> 
+      </View>
+      );
+    }
 
-		return (
-			<Card>
-				<CardSection >
-					<Input
-						placeholder="user@gmail.com"
-						label="Email"
-						onChangeText={this.emailChange.bind(this)}
+    return (
+      <Card>
+        <CardSection >
+          <Input
+            placeholder="user@gmail.com"
+            label="Email"
+            onChangeText={this.emailChange.bind(this)}
             value={email}
-					/>
-				</CardSection>
-				{this.renderPassword()}
-				<Text style={styles.errorTextStyle}>
-					{this.props.error}
-				</Text>
-				<CardSection>
-					{this.renderButton()}
-				</CardSection>
+          />
+        </CardSection>
+        {this.renderPassword()}
+        <Text style={styles.errorTextStyle}>
+          {this.props.error}
+        </Text>
         <CardSection>
-					{this.renderCreateButton()}
-				</CardSection>
-		</Card>
+          {this.renderButton()}
+        </CardSection>
+        <CardSection>
+          {this.renderCreateButton()}
+        </CardSection>
+    </Card>
   );
+
+  }
+
+	render() {
+    return ( 
+    <View>
+    { this.renderDisplay() }
+    </View>
+    )		
   }
 }
 
@@ -172,7 +189,8 @@ const mapStateToProps = state => ({
   confirmPassword: state.loginForm.confirmPassword,
   error: state.loginForm.error,
   showCreateUser: state.loginForm.showCreateUser,
-  loading: state.loginForm.loading
+  loading: state.loginForm.loading,
+  user: state.loginForm.user
 });
 
 const styles = StyleSheet.create({
