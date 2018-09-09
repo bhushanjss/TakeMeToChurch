@@ -41,6 +41,18 @@ export const createUser = ({ email, password }) => (
  }
 );
 
+export const loginFacebook = () => (
+  (dispatch) => {
+    dispatch(action(LOGIN_USER));   
+    var provider = new firebase.auth.FacebookAuthProvider(); 
+    firebase.auth().signInWithRedirect(provider).then( result => {
+      const token = result.credential.accessToken;
+      const user = result.user;
+      dispatch(action(LOGIN_USER_SUCCESS, user));
+    }).catch(error => loginUserFailed(dispatch, error));
+  }
+);
+
 const loginUserSuccess = (dispatch, user) => {
   dispatch(action(LOGIN_USER_SUCCESS, user));
   //NavigationService.navigate('Profile');

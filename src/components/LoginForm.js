@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
+import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
 import {
   View,
   Text,
   StyleSheet
 } from 'react-native';
-
 import { Button, Icon } from 'react-native-elements';
+
 import { Card, CardSection, Input, Spinner } from './common';
-import { emailChange, passwordChange, resetLoginForm, loginUser,
+import { emailChange, passwordChange, resetLoginForm, loginUser, loginFacebook,
    createUser, toggleAccount, confirmPasswordChange } from '../actions/forms';
 import Routes from '../Routes';
 import NavigationService from '../NavigationService';
@@ -17,7 +19,8 @@ class LoginForm extends Component {
 
 	onLoginButtonPress() {
     const { email, password } = this.props;
-    this.props.loginUser({ email, password });
+    //this.props.loginUser({ email, password });
+    this.props.loginFacebook();
 	}
 
   onCreateUserButtonPress() {
@@ -62,6 +65,36 @@ class LoginForm extends Component {
     return (
       <View style={styles.createUserView}>
         <Button title='Log In' onPress={this.onLoginButtonPress.bind(this)} />
+
+        <FBLogin style={{ marginBottom: 10, }}
+        ref={(fbLogin) => { this.fbLogin = fbLogin }}
+        permissions={["email","user_friends"]}
+        onLogin={function(data){
+          console.log("Logged in!");
+          console.log(data);
+        }}
+        onLogout={function(){
+          console.log("Logged out.");
+        }}
+        onLoginFound={function(data){
+          console.log("Existing login found.");
+          console.log(data);
+        }}
+        onLoginNotFound={function(){
+          console.log("No user logged in.");
+        }}
+        onError={function(data){
+          console.log("ERROR");
+          console.log(data);
+        }}
+        onCancel={function(){
+          console.log("User cancelled.");
+        }}
+        onPermissionsMissing={function(data){
+          console.log("Check permissions!");
+          console.log(data);
+        }}
+      />
        </View> 
     );
   }
@@ -218,6 +251,7 @@ export default connect(mapStateToProps, { emailChange,
   confirmPasswordChange,
   resetLoginForm,
   loginUser,
+  loginFacebook,
   createUser,
   toggleAccount
  })(LoginForm);
