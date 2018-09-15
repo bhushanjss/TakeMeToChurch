@@ -1,0 +1,8 @@
+{ declinedPermissions: [],
+  credentials: 
+   { token: 'EAARMDT6h4pYBAIDF3dftDmAl8yCRt6KPL3ZATjZCqdfcZBuGbVmN23OdZBJ2qZBQrHyk740ufG3SduhKhw8lxEtv1xPhe6xhtj35ccQtXCZAquVgBnTdfRgESwCbXutjQn7XG3tC5V2gRZALBw5s8ZBVWJ2RSS1StjTDvQRIczFf1ppTUZBMwRan0yVnXz4FF619ZCz3UwiWJnAGw5ttlw9MGa1ikeevJQ1YKfW8u49d64qGn3viWL5ZA1g',
+     userId: '131891344429806',
+     permissions: [ 'email', 'public_profile', 'user_friends' ],
+     tokenExpirationDate: '2018-11-15T02:38:43+05:30' },
+  missingPermissions: [] 
+}
