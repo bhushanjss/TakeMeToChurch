@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import firebase from 'react-native-firebase';
 import { Platform } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import RNFetchBlob from 'react-native-fetch-blob';
@@ -41,26 +41,24 @@ export const createUser = ({ email, password }) => (
  }
 );
 
-export const loginFacebook = () => (
+export const loginFacebook = (token) => (
   (dispatch) => {
-    dispatch(action(LOGIN_USER));   
-    var provider = new firebase.auth.FacebookAuthProvider(); 
-    firebase.auth().signInWithRedirect(provider).then( result => {
-      const token = result.credential.accessToken;
-      const user = result.user;
-      dispatch(action(LOGIN_USER_SUCCESS, user));
-    }).catch(error => loginUserFailed(dispatch, error));
+    dispatch(action(LOGIN_USER));
+    const credential = firebase.auth.FacebookAuthProvider.credential(token);
+    firebase.auth().signInAndRetrieveDataWithCredential(credential)
+    .then(user => loginUserSuccess(dispatch, user))
+    .catch(error => loginUserFailed(dispatch, error));
   }
 );
 
 const loginUserSuccess = (dispatch, user) => {
   dispatch(action(LOGIN_USER_SUCCESS, user));
-  //NavigationService.navigate('Profile');
+  NavigationService.navigate('Profile');
 };
 
 const createUserSuccess = (dispatch, user) => {
   dispatch(action(CREATE_USER_SUCCESS, user));
-  //NavigationService.navigate('ProfileForm');
+  NavigationService.navigate('ProfileForm');
 };
 
 const loginUserFailed = (dispatch, error) => (

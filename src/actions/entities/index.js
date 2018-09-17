@@ -1,4 +1,4 @@
-import firebase from 'firebase';
+import firebase from 'react-native-firebase';
 
 import action from '../action';
 import NavigationService from '../../NavigationService';

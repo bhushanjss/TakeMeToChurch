@@ -19,9 +19,14 @@ class LoginForm extends Component {
 
 	onLoginButtonPress() {
     const { email, password } = this.props;
-    //this.props.loginUser({ email, password });
-    this.props.loginFacebook();
+    this.props.loginUser({ email, password });    
 	}
+
+  onFacebookLogin(data) {
+    console.log("Logged in!");
+    console.log(data);
+    this.props.loginFacebook(data.credentials.token);
+  }
 
   onCreateUserButtonPress() {
     const { email, password } = this.props;
@@ -66,32 +71,15 @@ class LoginForm extends Component {
       <View style={styles.createUserView}>
         <Button title='Log In' onPress={this.onLoginButtonPress.bind(this)} />
 
-        <FBLogin style={{ marginBottom: 10, }}
+        <FBLogin style={{ marginBottom: 10, marginTop: 10, flex: 1, alignSelf: 'center' }}
         ref={(fbLogin) => { this.fbLogin = fbLogin }}
-        permissions={["email","user_friends"]}
-        onLogin={function(data){
-          console.log("Logged in!");
-          console.log(data);
-        }}
+        permissions={["public_profile", "email"]}
+        onLogin={this.onFacebookLogin.bind(this)}
         onLogout={function(){
           console.log("Logged out.");
         }}
-        onLoginFound={function(data){
-          console.log("Existing login found.");
-          console.log(data);
-        }}
-        onLoginNotFound={function(){
-          console.log("No user logged in.");
-        }}
         onError={function(data){
           console.log("ERROR");
-          console.log(data);
-        }}
-        onCancel={function(){
-          console.log("User cancelled.");
-        }}
-        onPermissionsMissing={function(data){
-          console.log("Check permissions!");
           console.log(data);
         }}
       />
