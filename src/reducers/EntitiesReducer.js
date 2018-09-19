@@ -1,5 +1,5 @@
 import { LOAD_PROFILE, LOAD_PROFILE_SUCCESS, LOAD_PROFILE_FAILED, LOAD_DRIVER,
-  LOAD_DRIVER_SUCCESS, LOAD_DRIVER_FAILED } from '../actions/entities/types';
+  LOAD_DRIVER_SUCCESS, LOAD_DRIVER_FAILED, UPDATE_PROFILE_IMAGE_URL } from '../actions/entities/types';
 
 const INITIAL_STATE = {
   profile: {
@@ -15,14 +15,17 @@ const INITIAL_STATE = {
       carModel: '',
       carSeats: '',
       isChecked: false
-    }
+    },
+    userId: ''
   },
+  profileImgUrl: '',
   drivers: [],
   error: '',
   loading: false
 };
 
 export default (state = INITIAL_STATE, action) => {
+  console.log(state);
   switch (action.type) {
     case LOAD_PROFILE:
       return { ...state, loading: true };
@@ -36,6 +39,8 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, loading: false, drivers: action.payload };
     case LOAD_DRIVER_FAILED:
       return { ...state, loading: false, error: action.payload };
+    case UPDATE_PROFILE_IMAGE_URL:
+      return { ...state, profileImgUrl: action.payload }; 
     default:
       return state;
   }

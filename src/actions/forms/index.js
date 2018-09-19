@@ -16,6 +16,7 @@ import { EMAIL_CHANGE, PASSWORD_CHANGE, CONFIRM_PASSWORD_CHANGE,
   MASS_TIME_CHANGE, ADD_MASS_TIME, DELETE_MASS_TIME, SAVE_MASS_TIME, SAVE_CHURCH,
   SAVE_CHURCH_SUCCESS, SAVE_CHURCH_FAILED, UPLOAD_IMAGE, UPLOAD_IMAGE_SUCCESS,
   UPLOAD_IMAGE_FAILED } from './types';
+  import { UPDATE_PROFILE_IMAGE_URL } from '../entities/types';
 
 //login form
 export const emailChange = (text) => action(EMAIL_CHANGE, text);
@@ -99,21 +100,14 @@ export const saveProfile = (profile, driver, isChecked) => (
   }
 );
 
-const uploadingImage = (uri, fs, Blob, mime = 'application/octet-stream') => (
+const uploadingImage = (uri, mime = 'application/octet-stream') => (
   new Promise((resolve, reject) => {
+    const { currentUser } = firebase.auth();
     const uploadUri = Platform.OS === 'ios' ? uri.replace('file://', '') : uri;
-    const sessionId = new Date().getTime();
-    let uploadBlob = null;
-    const imageRef = firebase.storage().ref('images').child(`${sessionId}`);
+    const imageRef = firebase.storage().ref('images').child(`${currentUser.uid}`).child('profile');
 
-    fs.readFile(uploadUri, 'base64')
-      .then((data) => Blob.build(data, { type: `${mime};BASE64` }))
-      .then((blob) => {
-        uploadBlob = blob;
-        return imageRef.put(blob, { contentType: mime });
-      })
+    imageRef.put(uploadUri, { contentType: mime })    
       .then(() => {
-        uploadBlob.close();
         return imageRef.getDownloadURL();
       })
       .then((url) => {
@@ -126,17 +120,16 @@ const uploadingImage = (uri, fs, Blob, mime = 'application/octet-stream') => (
 );
 
 export const uploadImage = () => {
-  // Prepare Blob support
-  const Blob = RNFetchBlob.polyfill.Blob;
-  const fs = RNFetchBlob.fs;
   this.window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
-  this.window.Blob = Blob;
 
   return (dispatch) => {
     dispatch(action(UPLOAD_IMAGE));
     ImagePicker.launchImageLibrary({}, response => {
-      uploadingImage(response.uri, fs, Blob)
-        .then(url => dispatch(action(UPLOAD_IMAGE_SUCCESS, url)))
+      uploadingImage(response.uri)
+        .then(url => {
+          dispatch(action(UPLOAD_IMAGE_SUCCESS, url));
+          dispatch(action(UPDATE_PROFILE_IMAGE_URL, url))
+        })
         .catch(error => dispatch(action(UPLOAD_IMAGE_FAILED, error)));
     });
   };

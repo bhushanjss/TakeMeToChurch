@@ -21,19 +21,36 @@ class DriversItem extends Component {
     Linking.openURL(`sms:${this.props.driver.phoneNumber}`);
   }
 
+  showProfileIcon() {
+    const { firstName, lastName, profileImgUrl } = this.props.driver;    
+
+    if(!profileImgUrl) {
+      const title = firstName.charAt(0) + lastName.charAt(0);
+      return (<Avatar
+              title={title}
+              size="large"
+              rounded
+              onPress={() => console.log('Works!')}
+              activeOpacity={0.7}
+            />);
+    }
+
+    return (<Avatar
+              size="large"
+              rounded
+              source={{ uri: profileImgUrl }}
+              onPress={() => console.log('Works!')}
+              activeOpacity={0.7}
+            />);
+  }
+
   render() {
-    const { firstName, lastName, carModel, carSeats } = this.props.driver;
+    const { firstName, lastName, carModel, carSeats, profileImgUrl } = this.props.driver;
     return (
       <Card>
           <CardSection>
           <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start' }} >
-            <Avatar
-              size="large"
-              rounded
-              source={{ uri: 'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg' }}
-              onPress={() => console.log('Works!')}
-              activeOpacity={0.7}
-            />
+            { this.showProfileIcon() }
             <View style={{ flex: 1, paddingLeft: 20, paddingRight: 10,
               justifyContent: 'flex-start' }}
             >

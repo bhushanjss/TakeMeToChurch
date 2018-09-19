@@ -3,7 +3,7 @@ import { View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Card, Avatar, Text, Icon } from 'react-native-elements';
-import { loadProfile } from '../actions/entities';
+import { loadProfile, loadProfileImage } from '../actions/entities';
 import { uploadImage } from '../actions/forms';
 
 class Profile extends Component {
@@ -21,11 +21,35 @@ class Profile extends Component {
   };
 
   componentWillMount() {
+    this.props.loadProfileImage();
     this.props.loadProfile();
   }
 
   pickImage() {
     this.props.uploadImage();
+  }
+
+ showProfileIcon() {
+  const { firstName, lastName, profileImgUrl } = this.props;
+
+  if(!profileImgUrl) {
+    const title = firstName.charAt(0) + lastName.charAt(0);
+    return (<Avatar
+            title={title}
+            size="large"
+            rounded
+            onPress={this.pickImage.bind(this)}
+            activeOpacity={0.7}
+          />);
+  }
+
+  return (<Avatar
+            size="large"
+            rounded
+            source={{ uri: profileImgUrl }}
+            onPress={this.pickImage.bind(this)}
+            activeOpacity={0.7}
+          />);
   }
 
   render() {
@@ -36,13 +60,7 @@ class Profile extends Component {
       <ScrollView>
         <Card>
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
-        <Avatar
-          size="large"
-          rounded
-          source={{ uri:'https://s3.amazonaws.com/uifaces/faces/twitter/brynn/128.jpg' }}
-          onPress={this.pickImage.bind(this)}
-          activeOpacity={0.7}
-        />
+        { this.showProfileIcon() }
         </View>
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', paddingTop: 10 }}>
           <Text h3>{firstName} {lastName}</Text>
@@ -97,11 +115,13 @@ const mapStateToProps = state => {
     zip: profile.zip,
     carModel: profile.carModel,
     carSeats: profile.carSeats,
-    isChecked: profile.isChecked
+    isChecked: profile.isChecked,
+    profileImgUrl: state.entities.profileImgUrl
   };
 };
 
 export default connect(mapStateToProps, {
 loadProfile,
-uploadImage
+uploadImage,
+loadProfileImage
 })(Profile);
