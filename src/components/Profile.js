@@ -8,16 +8,10 @@ import { uploadImage } from '../actions/forms';
 
 class Profile extends Component {
 
-  static navigationOptions = {
-    title: 'Profile',
-    headerStyle: {
-      backgroundColor: '#f4511e',
-    },
-    headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
-    drawerLabel: 'Profile',
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Profile'
+    };
   };
 
   componentWillMount() {
@@ -62,8 +56,9 @@ class Profile extends Component {
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
         { this.showProfileIcon() }
         </View>
-        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', paddingTop: 10 }}>
+        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', paddingTop: 10 }}>          
           <Text h3>{firstName} {lastName}</Text>
+          <Icon name='edit' />
         </View>
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', padding: 10 }}>
           <Icon name='phone' />

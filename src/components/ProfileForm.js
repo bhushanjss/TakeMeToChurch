@@ -7,20 +7,13 @@ import { firstNameChange, lastNameChange, phoneNumberChange, profileStreetChange
   carModelChange, carSeatsChange, isProfileCheckboxChanged,
   saveProfile } from '../actions/forms';
 
-import { Card, CardSection } from './common';
+import { Card, CardSection, Header } from './common';
 
 class ProfileForm extends Component {
 
   static navigationOptions = {
-    title: 'Create Profile',
-    headerStyle: {
-      backgroundColor: '#f4511e',
-    },
-    headerTintColor: '#fff',
-    headerTitleStyle: {
-      fontWeight: 'bold',
-    },
-  };
+    drawerLabel: () => null
+  }
 
   firstNameChange(text) {
     this.props.firstNameChange(text);
@@ -102,6 +95,7 @@ class ProfileForm extends Component {
     return (
       <ScrollView>
       <Card >
+       <Header headerText="Profile Details"/>
       <CardSection>
       <Input
         placeholder='First Name'
@@ -141,7 +135,7 @@ class ProfileForm extends Component {
       </CardSection>
       <CardSection>
       <Input
-        placeholder='Apartment/Unit'
+        placeholder='Apartment\/Unit'
         inputContainerStyle={styles.inputContainerStyle}
         leftIcon={<Icon name='home' size={24} color='black' />}
         onChangeText={this.profileAptChange.bind(this)}

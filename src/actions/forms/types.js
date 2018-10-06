@@ -7,7 +7,8 @@ export const LOGIN_USER = 'login_user';
 export const LOGIN_USER_SUCCESS = 'login_user_success';
 export const LOGIN_USER_FAILED = 'login_user_failed';
 export const CREATE_USER = 'create_user';
-export const CREATE_USER_SUCCESS = 'create_user';
+export const CREATE_USER_SUCCESS = 'create_user_success';
+export const CREATE_USER_DETAILS_SAVED = 'create_user_details_saved';
 export const TOGGLE_ACCOUNT = 'toggle_account';
 
 //create profile form

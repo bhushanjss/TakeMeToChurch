@@ -1,7 +1,6 @@
 import firebase from 'react-native-firebase';
 import { Platform } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
-import RNFetchBlob from 'react-native-fetch-blob';
 
 import NavigationService from '../../NavigationService';
 import action from '../action';
@@ -59,7 +58,6 @@ const loginUserSuccess = (dispatch, user) => {
 
 const createUserSuccess = (dispatch, user) => {
   dispatch(action(CREATE_USER_SUCCESS, user));
-  NavigationService.navigate('ProfileForm');
 };
 
 const loginUserFailed = (dispatch, error) => (
@@ -120,7 +118,6 @@ const uploadingImage = (uri, mime = 'application/octet-stream') => (
 );
 
 export const uploadImage = () => {
-  this.window.XMLHttpRequest = RNFetchBlob.polyfill.XMLHttpRequest;
 
   return (dispatch) => {
     dispatch(action(UPLOAD_IMAGE));

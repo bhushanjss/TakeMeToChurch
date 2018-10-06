@@ -9,10 +9,11 @@ import {
 } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 
-import { Card, CardSection, Input, Spinner } from './common';
+import { Card, CardSection, Input, Spinner, Header } from './common';
 import { emailChange, passwordChange, resetLoginForm, loginUser, loginFacebook,
    createUser, toggleAccount, confirmPasswordChange } from '../actions/forms';
 import Routes from '../Routes';
+import ProfileForm from './ProfileForm';
 import NavigationService from '../NavigationService';
 
 class LoginForm extends Component {
@@ -152,8 +153,8 @@ renderPassword() {
   }
 
   renderDisplay() {
-    const { email, user } = this.props;
-    if(user) {
+    const { email, user, createUserDetailsPending } = this.props;
+    if(user && !createUserDetailsPending) {
       return (
       <View style={{ flex: 1 }}> 
         <View style={{ height: 24, marginTop: 24, marginBottom: 4, paddingLeft: 16, alignItems: 'flex-start' }}>   
@@ -170,8 +171,15 @@ renderPassword() {
       );
     }
 
+    if(user && createUserDetailsPending) {
+      return (
+        <ProfileForm />
+      )
+    }
+
     return (
       <Card>
+        <Header headerText="Take Me To Church" />
         <CardSection >
           <Input
             placeholder="user@gmail.com"
@@ -197,7 +205,7 @@ renderPassword() {
 
 	render() {
     return ( 
-    <View>
+    <View>    
     { this.renderDisplay() }
     </View>
     )		
@@ -211,7 +219,8 @@ const mapStateToProps = state => ({
   error: state.loginForm.error,
   showCreateUser: state.loginForm.showCreateUser,
   loading: state.loginForm.loading,
-  user: state.loginForm.user
+  user: state.loginForm.user,
+  createUserDetailsPending: state.loginForm.createUserDetailsPending
 });
 
 const styles = StyleSheet.create({

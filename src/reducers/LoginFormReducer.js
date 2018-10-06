@@ -1,6 +1,7 @@
 import { EMAIL_CHANGE, PASSWORD_CHANGE, CONFIRM_PASSWORD_CHANGE,
   LOGIN_USER, LOGIN_USER_SUCCESS, LOGIN_USER_FAILED,
-  CREATE_USER, RESET_LOGIN_FORM, TOGGLE_ACCOUNT } from '../actions/forms/types';
+  CREATE_USER, CREATE_USER_SUCCESS, CREATE_USER_DETAILS_SAVED,
+  RESET_LOGIN_FORM, TOGGLE_ACCOUNT, SAVE_PROFILE_SUCCESS } from '../actions/forms/types';
 
 const INITIAL_STATE = {
   email: '',
@@ -9,6 +10,7 @@ const INITIAL_STATE = {
   error: '',
   loading: false,
   showCreateUser: false,
+  createUserDetailsPending: false,
   user: null
 };
 
@@ -31,6 +33,10 @@ export default (state = INITIAL_STATE, action) => {
         loading: false,
         password: '',
         confirmPassword: '' };
+    case CREATE_USER_SUCCESS:
+      return { ...state, user: action.payload, error: '', loading: false, createUserDetailsPending: true };
+    case SAVE_PROFILE_SUCCESS:
+      return { ...state, createUserDetailsPending: false };     
     case TOGGLE_ACCOUNT:
         return { ...state,
         showCreateUser: action.payload,
