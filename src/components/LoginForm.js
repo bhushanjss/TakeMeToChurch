@@ -153,8 +153,8 @@ renderPassword() {
   }
 
   renderDisplay() {
-    const { email, user, createUserDetailsPending } = this.props;
-    if(user && !createUserDetailsPending) {
+    const { email, user } = this.props;
+    if(user) {
       return (
       <View style={{ flex: 1 }}> 
         <View style={{ height: 24, marginTop: 24, marginBottom: 4, paddingLeft: 16, alignItems: 'flex-start' }}>   
@@ -169,12 +169,6 @@ renderPassword() {
          </View> 
       </View>
       );
-    }
-
-    if(user && createUserDetailsPending) {
-      return (
-        <ProfileForm />
-      )
     }
 
     return (
@@ -219,8 +213,7 @@ const mapStateToProps = state => ({
   error: state.loginForm.error,
   showCreateUser: state.loginForm.showCreateUser,
   loading: state.loginForm.loading,
-  user: state.loginForm.user,
-  createUserDetailsPending: state.loginForm.createUserDetailsPending
+  user: state.loginForm.user
 });
 
 const styles = StyleSheet.create({

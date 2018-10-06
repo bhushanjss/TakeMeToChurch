@@ -12,8 +12,12 @@ export const loadProfile = () => (
     dispatch(action(LOAD_PROFILE));
     firebase.database().ref(`/profiles/${currentUser.uid}`)
     .on('value', snapshot => {
-      dispatch(action(LOAD_PROFILE_SUCCESS, {...snapshot.val(), userId: currentUser.uid}));
-      NavigationService.navigate('Profile');
+      const profileVal = snapshot.val();
+      if(!profileVal) {
+        NavigationService.navigate('ProfileForm');
+      } else {
+        dispatch(action(LOAD_PROFILE_SUCCESS, {...snapshot.val(), userId: currentUser.uid}));        
+      }      
     });
   }
 );
