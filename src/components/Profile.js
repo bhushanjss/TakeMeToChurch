@@ -3,7 +3,7 @@ import { View, ScrollView } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Card, Avatar, Text, Icon } from 'react-native-elements';
-import { loadProfile, loadProfileImage } from '../actions/entities';
+import { loadProfile, loadProfileImage, editProfile } from '../actions/entities';
 import { uploadImage } from '../actions/forms';
 
 class Profile extends Component {
@@ -21,6 +21,26 @@ class Profile extends Component {
 
   pickImage() {
     this.props.uploadImage();
+  }
+
+  editProfile() {
+    const { firstName, lastName, phoneNumber, street, apt, city, state, zip,
+      carModel, carSeats, isChecked
+    } = this.props;
+
+    this.props.editProfile({
+      firstName,
+      lastName,
+      phoneNumber,
+      street,
+      apt,
+      city,
+      state,
+      zip,
+      carModel,
+      carSeats,
+      isChecked
+    });
   }
 
  showProfileIcon() {
@@ -58,7 +78,7 @@ class Profile extends Component {
         </View>
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center', paddingTop: 10 }}>          
           <Text h3>{firstName} {lastName}</Text>
-          <Icon name='edit' />
+          <Icon name='edit' onPress={this.editProfile.bind(this)} />
         </View>
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', padding: 10 }}>
           <Icon name='phone' />
@@ -98,7 +118,7 @@ class Profile extends Component {
 }
 
 const mapStateToProps = state => {
-  const profile = _.values(state.entities.profile)[0];
+  const profile = state.entities.profile;
   return {
     firstName: profile.firstName,
     lastName: profile.lastName,
@@ -118,5 +138,6 @@ const mapStateToProps = state => {
 export default connect(mapStateToProps, {
 loadProfile,
 uploadImage,
-loadProfileImage
+loadProfileImage,
+editProfile
 })(Profile);

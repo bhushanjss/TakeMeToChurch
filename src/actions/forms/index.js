@@ -82,15 +82,15 @@ export const saveProfile = (profile, driver, isChecked) => (
     const { currentUser } = firebase.auth();
     dispatch(action(SAVE_PROFILE));
     firebase.database().ref(`/profiles/${currentUser.uid}`)
-    .push(profile)
-    .on('value', snapshot => {
-      dispatch(action(SAVE_PROFILE_SUCCESS, snapshot.val()));
+    .set(profile)
+    .then(() => {
+      dispatch(action(SAVE_PROFILE_SUCCESS));
       if (isChecked) {
         dispatch(action(SAVE_DRIVER));
-        firebase.database().ref('/drivers')
-        .push({ ...driver, profileId: snapshot.key, userId: currentUser.uid })
-        .on('value', snap => {
-          dispatch(action(SAVE_DRIVER_SUCCESS, snap.val()));
+        firebase.database().ref(`/drivers/${currentUser.uid}`)
+        .set(driver)
+        .then(() => {
+          dispatch(action(SAVE_DRIVER_SUCCESS));
         });
       }
       NavigationService.navigate('Profile');

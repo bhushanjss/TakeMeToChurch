@@ -4,8 +4,8 @@ import { EMAIL_CHANGE, PASSWORD_CHANGE, CONFIRM_PASSWORD_CHANGE,
   RESET_LOGIN_FORM, TOGGLE_ACCOUNT, SAVE_PROFILE_SUCCESS } from '../actions/forms/types';
 
 const INITIAL_STATE = {
-  email: '',
-  password: '',
+  email: 'abc@c.com',
+  password: '123456',
   confirmPassword: '',
   error: '',
   loading: false,

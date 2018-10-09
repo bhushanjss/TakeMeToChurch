@@ -6,3 +6,4 @@ export const LOAD_DRIVER = 'load_driver';
 export const LOAD_DRIVER_SUCCESS = 'load_driver_success';
 export const LOAD_DRIVER_FAILED = 'load_driver_failed';
 export const UPDATE_PROFILE_IMAGE_URL = 'update_profile_image_url';
+export const EDIT_PROFILE = 'edit_profile';

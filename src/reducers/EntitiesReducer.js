@@ -3,7 +3,6 @@ import { LOAD_PROFILE, LOAD_PROFILE_SUCCESS, LOAD_PROFILE_FAILED, LOAD_DRIVER,
 
 const INITIAL_STATE = {
   profile: {
-    id: {
       firstName: '',
       lastName: '',
       phoneNumber: '',
@@ -15,8 +14,6 @@ const INITIAL_STATE = {
       carModel: '',
       carSeats: '',
       isChecked: false
-    },
-    userId: ''
   },
   profileImgUrl: '',
   drivers: [],
