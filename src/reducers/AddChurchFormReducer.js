@@ -3,6 +3,8 @@ import { CHURCH_NAME_CHANGE, CHURCH_PHONE_NUMBER_CHANGE, CHURCH_STREET_CHANGE,
   ADD_MASS_TIME, SAVE_CHURCH, SAVE_CHURCH_SUCCESS, SAVE_CHURCH_FAILED,
   SAVE_MASS_TIME, DELETE_MASS_TIME } from '../actions/forms/types';
 
+  import { removeElement } from '../util/util';
+
 const INITIAL_STATE = {
   churchName: '',
   churchPhoneNumber: '',
@@ -19,6 +21,7 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   console.log(action);
+  console.log(state);
   switch (action.type) {
     case CHURCH_NAME_CHANGE:
       return { ...state, churchName: action.payload };
@@ -37,13 +40,11 @@ export default (state = INITIAL_STATE, action) => {
     case SAVE_MASS_TIME:
       return { ...state, massTimes: [...state.massTimes, action.payload], addMassTime: false };
     case DELETE_MASS_TIME:
-    {
-      const mTimes = state.massTimes;
-      mTimes.splice(action.payload);
-      return { ...state, massTimes: mTimes };
-    }
+      return { ...state, massTimes: removeElement(state.massTimes, action.payload) };
     case MASS_TIME_CHANGE:
       return { ...state, massTime: action.payload };
+    case SAVE_CHURCH_SUCCESS:
+      return INITIAL_STATE;  
     default:
       return state;
   }

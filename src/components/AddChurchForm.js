@@ -166,7 +166,7 @@ class AddChurchForm extends Component {
           <Button
           title=''
           icon={<Icon name='clear' size={16} />}
-          onPress={this.deleteMassTimeChange.bind(this, val.index)}
+          onPress={this.deleteMassTimeChange.bind(this, val.item)}
           />
           </View>
         )}

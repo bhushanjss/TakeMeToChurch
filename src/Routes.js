@@ -40,7 +40,7 @@ const DrawerRoutes = {
 const RootStack = createDrawerNavigator(
   DrawerRoutes, {
     drawerWidth: 300,
-    initialRouteName: 'Drivers',
+    initialRouteName: 'Profile',
     contentComponent: props => {
                 return (
                   <View style={{flex:1}}>                    

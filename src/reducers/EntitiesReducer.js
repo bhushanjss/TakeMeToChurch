@@ -22,7 +22,6 @@ const INITIAL_STATE = {
 };
 
 export default (state = INITIAL_STATE, action) => {
-  console.log(state);
   switch (action.type) {
     case LOAD_PROFILE:
       return { ...state, loading: true };

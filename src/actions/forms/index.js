@@ -53,7 +53,6 @@ export const loginFacebook = (token) => (
 
 const loginUserSuccess = (dispatch, user) => {
   dispatch(action(LOGIN_USER_SUCCESS, user));
-  NavigationService.navigate('Profile');
 };
 
 const createUserSuccess = (dispatch, user) => {
