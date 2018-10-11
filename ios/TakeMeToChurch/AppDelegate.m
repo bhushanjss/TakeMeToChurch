@@ -12,6 +12,7 @@
 #import <FBSDKCoreKit/FBSDKCoreKit.h>
 #import <FBSDKLoginKit/FBSDKLoginKit.h>
 #import <Firebase.h>
+@import GoogleMaps;
 
 @implementation AppDelegate
 
@@ -19,6 +20,7 @@
 {
   [FIRApp configure];
   NSURL *jsCodeLocation;
+  [GMSServices provideAPIKey:@"YOUR_KEY_LOL"];
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 

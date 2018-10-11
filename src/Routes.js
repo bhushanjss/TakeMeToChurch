@@ -6,6 +6,7 @@ import ProfileChurchForm from './components/ProfileChurchForm';
 import AddChurchForm from './components/AddChurchForm';
 import Profile from './components/Profile';
 import Drivers from './components/Drivers';
+import MapMain from './components/MapMain';
 import NavigationService from './NavigationService';
 
 class Routes extends Component {
@@ -33,6 +34,9 @@ const DrawerRoutes = {
     },
     Drivers: {
       screen: Drivers
+    },
+    MapMain: {
+      screen: MapMain
     }
   };
 

@@ -16,7 +16,7 @@ export const loadProfile = () => (
       if(!profileVal) {
         NavigationService.navigate('ProfileForm');
       } else {
-        dispatch(action(LOAD_PROFILE_SUCCESS, {...snapshot.val(), userId: currentUser.uid}));        
+        dispatch(action(LOAD_PROFILE_SUCCESS, snapshot.val()));     
       }      
     });
   }

@@ -62,7 +62,9 @@ class Drivers extends Component {
 }
 
 const mapStateToProps = state => {
-const drivers = _.map(state.entities.drivers, (val, driverId) => ({ ...val, driverId }));
+const userId = state.loginForm.user.uid;
+const allDrivers = _.map(state.entities.drivers, (val, driverId) => ({ ...val, driverId }));
+const drivers = _.filter(allDrivers, (val) => val.driverId !== userId );
   return { drivers, showList: (drivers.length > 0) };
 };
 
