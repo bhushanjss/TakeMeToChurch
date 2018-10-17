@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import { View, ScrollView, StyleSheet, FlatList } from 'react-native';
 import { Input, Icon, Button, Text } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import DatePicker from 'react-native-datepicker';
+
+import { churchLookUp, profileAddMassDropdown } from '../actions/forms/';
 
 import { Card, CardSection, Header } from './common';
 class ProfileChurchForm extends Component {
@@ -19,67 +22,110 @@ class ProfileChurchForm extends Component {
     },
   };
 
+  churchLookUp() {
+    this.props.churchLookUp();
+  }
+
+  handleDropdownSelection(value, index) {
+    this.props.profileAddMassDropdown(value);
+  }
+
+  saveChurch() {
+
+  }
+
   churchItem = ({item}) => {
    return (
    <CardSection>
     <View style={{ flex: 1, flexDirection: 'column' }}>
-      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start' }}>
+      <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start' }}>
         <View style={{ paddingLeft: 10 }}>
           <Text h4>{item.churchName}</Text>
           <View style={{ flex: 1, paddingBottom: 5, justifyContent: 'flex-start' }}>
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={{ fontWeight: '700' }}>Mass Time:</Text>
-              { this.renderAddMassButton() }
-            </View>  
-            <FlatList
-            data={item.massTimes}
-            renderItem={(val) => (
-              <View style={{ flex: 1, paddingTop: 5, paddingBottom: 5, flexDirection: 'row',
-               justifyContent: 'space-between' }}>
-                <Text>{val.item}</Text>
-                <Button
-                  title=''
-                  style={{ paddingLeft: 10}}
-                  icon={<Icon name='clear' size={16} />}
-                  />
-              </View>
-            )} />
+              <Button
+                icon={<Icon name='edit' size={24} /> }
+                title=''
+                buttonStyle={{ backgroundColor: 'white',
+                 marginRight: 10 }}
+              />
+            </View>
+            <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>  
+              <FlatList
+              data={item.massTimes}
+              renderItem={(val) => (
+                <View style={{ flex: 1, paddingTop: 5, flexDirection: 'row',
+                 justifyContent: 'space-between' }}>
+                  <Text>{val.item}</Text>
+                </View>
+              )} />
+            </View>
           </View>
         </View>       
-      </View>
-      { this.renderAddMassTime() }       
+      </View>            
     </View>  
-  </CardSection>
-  );
-};
+   </CardSection>
+   );
+  };
 
-renderAddMassButton = () => {
-  return (
-    <Button
-      icon={<Icon name='add' size={16} color='white' />}
-      title=''
-    />
-  );
-}
+  editChurch() {
+    const { editChurchName, selectedMassTimes } = this.props;
+    if(editChurchName) {
+    return (
+     <CardSection>
+      <View style={{ flex: 1, flexDirection: 'column' }}>
+        <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start' }}>
+          <View style={{ paddingLeft: 10 }}>
+            <Text h4>{editChurchName}</Text>
+            <View style={{ flex: 1, paddingBottom: 5, justifyContent: 'flex-start' }}>
+              <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+                <Text style={{ fontWeight: '700', paddingTop: 5 }}>Mass Time:</Text>
+              </View>  
+              <FlatList
+              data={selectedMassTimes}
+              renderItem={(val) => (
+                <View style={{ flex: 1, paddingTop: 5, flexDirection: 'row',
+                 justifyContent: 'space-between' }}>
+                  <Text>{val.item}</Text>
+                  <Button
+                    title=''
+                    style={{ paddingLeft: 10}}
+                    buttonStyle={{ backgroundColor: 'white', marginRight: 10 }}
+                    icon={<Icon name='clear' size={24} />}
+                    />
+                </View>
+              )} />
+            </View>
+          </View>       
+        </View> 
+        { this.massDropDown() }
+        <View style={{ flex: 1, paddingLeft: 10, paddingRight: 10 }}>
+        <Button
+          icon={<Icon name='save' size={24} color='white' />}
+          title='SAVE'
+          onPress={this.saveChurch.bind(this)}
+          />
+        </View>                    
+      </View>       
+    </CardSection> 
+   );
+    }
+  };
 
-renderAddMassTime = () => {
-  return (
-  <View style={{ flex: 1, paddingLeft: 10, paddingRight: 10, flexDirection: 'column', justifyContent: 'flex-start' }}>
-        <Dropdown
-          label='Mass Times'
-          data={[{
-              value: 'Sunday 11:00 AM',
-            }, {
-              value: 'Sunday 12:00 PM',
-            }, {
-              value: 'Sunday 4:00 PM',
-            }, {
-              value: 'Sunday 7:00 PM',
-            }]}
-        />
-      </View>
-  );
-}
+  massDropDown() {
+    const { dropdowList, showDropDown } = this.props;
+    if(showDropDown) {
+      return (
+        <View style={{ flex: 1, paddingLeft: 10, paddingRight: 10,
+         flexDirection: 'column', justifyContent: 'flex-start' }}>
+          <Dropdown label='Available Mass Times' data={dropdowList}
+            onChangeText={this.handleDropdownSelection.bind(this)}  
+          />
+        </View>
+      );
+    }
+  }
 
   renderChurchList() {
 
@@ -107,24 +153,18 @@ renderAddMassTime = () => {
       <ScrollView>     
       <Card >     
       <Header headerText='My Church Times' />       
+        {this.editChurch()}
       <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', padding: 10 }}>
-      {this.renderChurchList()}
+        {this.renderChurchList()}
       </View>
       <CardSection>
         <View style={{ flex: 1 }}>
           <Button
             icon={<Icon name='add' size={24} color='white' />}
             title='Add Church'
+            onPress={this.churchLookUp.bind(this)}
           />
         </View>
-      </CardSection>
-      <CardSection>
-      <View style={{ flex: 1 }}>
-      <Button
-        icon={<Icon name='save' size={24} color='white' />}
-        title='SAVE'
-      />
-      </View>
       </CardSection>
       </Card>
       </ScrollView>
@@ -140,8 +180,16 @@ const styles = StyleSheet.create({
 
 const mapStatesToProps = state => ({
   myChurches: state.profileChurch.myChurches,
-  
+  editChurchName: state.profileChurch.editChurchName,
+  selectedMassTimes: state.profileChurch.selectedMassTimes,
+  editChurchPlaceId: state.profileChurch.editChurchPlaceId,
+  dropdowList: _.map(state.profileChurch.editChurchMassTimes,
+   val => ( { value: val } )),
+  showDropDown: state.profileChurch.editChurchMassTimes.length
 });
 
 
-export default connect(mapStatesToProps)(ProfileChurchForm);
+export default connect(mapStatesToProps, {
+  churchLookUp,
+  profileAddMassDropdown
+})(ProfileChurchForm);

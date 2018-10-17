@@ -1,4 +1,5 @@
 import axios from 'axios';
+import firebase from 'react-native-firebase';
 import _ from 'lodash';
 
 import appKeys from '../../../secretkey';
@@ -7,7 +8,7 @@ import NavigationService from '../../NavigationService';
 
 import { MAPS_INPUT_CHANGE, MAPS_AUTOCOMPLETE_SUBMIT, MAPS_AUTOCOMPLETE_SUBMIT_SUCCESS,
 MAPS_AUTOCOMPLETE_SUBMIT_FAILED, MAPS_PLACE_DETAILS, MAPS_PLACE_DETAILS_SUCCESS,
-MAPS_PLACE_DETAILS_FAILED, ADD_CHURCH_DETAILS
+MAPS_PLACE_DETAILS_FAILED, ADD_CHURCH_DETAILS, PLACE_DETAILS_SUCCESS
 } from './types';
 
 
@@ -35,36 +36,38 @@ export const handleMapSearch = (textInput) => (
 export const getPlaceDetails = (placeId) => (
 	(dispatch) => {
 		dispatch(action(MAPS_PLACE_DETAILS));
-		axios({
-		  method:'get',
-		  url:'https://maps.googleapis.com/maps/api/place/details/json',
-		  params: {
-		  	placeid: placeId,
-		  	key: appKeys.googleAPIKey
-		  }
-		})
-		.then(response => dispatch(action(MAPS_PLACE_DETAILS_SUCCESS, response.data.result)))
-	    .catch(error => dispatch(action(MAPS_PLACE_DETAILS_FAILED, error)));
+		firebase.database().ref(`/churches/${placeId}`)
+	    .on('value', snapshot => {
+	      const churchValues = snapshot.val();
+	      if(!churchValues) { //does not exist in the DB.
+	      	axios({
+			  method:'get',
+			  url:'https://maps.googleapis.com/maps/api/place/details/json',
+			  params: {
+			  	placeid: placeId,
+			  	key: appKeys.googleAPIKey
+			  }
+			})
+			.then(response => dispatch(action(MAPS_PLACE_DETAILS_SUCCESS, response.data.result)))
+		    .catch(error => dispatch(action(MAPS_PLACE_DETAILS_FAILED, error)));
+	      } else {
+	        dispatch(action(PLACE_DETAILS_SUCCESS, snapshot.val()));     
+	        NavigationService.navigate('ProfileChurchForm');
+	      }      
+	    });
 	}
 )
 
 export const addChurchDetails = (churchDetails) => (
 	(dispatch) => {
-		const church = {
-  		  churchName: churchDetails.name,	
-		  churchPhoneNumber: churchDetails.formatted_phone_number,
-		  churchStreet: getAddress(churchDetails.address_components, 'street'),
-		  churchCity: getAddress(churchDetails.address_components, 'city'),
-		  churchState: getAddress(churchDetails.address_components, 'state'),
-		  churchZip: getAddress(churchDetails.address_components, 'zip'),
-		  churchCountry: getAddress(churchDetails.address_components, 'country'),
-		  icon: churchDetails.icon,
-		  placeId: churchDetails.placeId,
-		  website: churchDetails.website,
-		  latlang: churchDetails.latlang,
-		  formattedAddress: churchDetails.formatted_address
+		const churchAddress = {
+		  churchStreet: getAddress(churchDetails.churchAddress, 'street'),
+		  churchCity: getAddress(churchDetails.churchAddress, 'city'),
+		  churchState: getAddress(churchDetails.churchAddress, 'state'),
+		  churchZip: getAddress(churchDetails.churchAddress, 'zip'),
+		  churchCountry: getAddress(churchDetails.churchAddress, 'country')
 		};
-		dispatch(action(ADD_CHURCH_DETAILS, church));
+		dispatch(action(ADD_CHURCH_DETAILS, { ...churchDetails, churchAddress }));
 		NavigationService.navigate('AddChurchForm');
 	}
 );

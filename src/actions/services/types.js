@@ -6,3 +6,4 @@ export const MAPS_PLACE_DETAILS = 'maps_place_details';
 export const MAPS_PLACE_DETAILS_SUCCESS = 'maps_place_details_success';
 export const MAPS_PLACE_DETAILS_FAILED = 'maps_place_details_failed';
 export const ADD_CHURCH_DETAILS = 'add_church_details';
+export const PLACE_DETAILS_SUCCESS = 'place_details_success';

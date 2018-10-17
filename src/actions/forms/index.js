@@ -14,7 +14,7 @@ import { EMAIL_CHANGE, PASSWORD_CHANGE, CONFIRM_PASSWORD_CHANGE,
   CHURCH_STREET_CHANGE, CHURCH_CITY_CHANGE, CHURCH_STATE_CHANGE, CHURCH_ZIP_CHANGE,
   MASS_TIME_CHANGE, ADD_MASS_TIME, DELETE_MASS_TIME, SAVE_MASS_TIME, SAVE_CHURCH,
   SAVE_CHURCH_SUCCESS, SAVE_CHURCH_FAILED, UPLOAD_IMAGE, UPLOAD_IMAGE_SUCCESS,
-  UPLOAD_IMAGE_FAILED } from './types';
+  UPLOAD_IMAGE_FAILED, PROFILE_SAVE_MASS_TIME } from './types';
   import { UPDATE_PROFILE_IMAGE_URL } from '../entities/types';
 
 //login form
@@ -145,11 +145,21 @@ export const deleteMassTimeChange = text => action(DELETE_MASS_TIME, text);
 
 export const saveChurch = (church) => (
   (dispatch) => {
+    const { currentUser } = firebase.auth();
     dispatch(action(SAVE_CHURCH));
-    firebase.database().ref('/churches/')
-    .push(church)
-    .on('value', snapshot => {
-      dispatch(action(SAVE_CHURCH_SUCCESS, snapshot.val()));
+    firebase.database().ref(`/churches/${church.placeId}`)
+    .set({ ...church, reporter: currentUser.uid })
+    .then(() => {
+      dispatch(action(SAVE_CHURCH_SUCCESS));
+      NavigationService.navigate('MapMain');
     });
   }
 );
+
+//profile church form
+export const churchLookUp = () => (
+  (dispatch) => {
+    NavigationService.navigate('MapMain');
+  }  
+);
+export const profileAddMassDropdown = text => action(PROFILE_SAVE_MASS_TIME, text);

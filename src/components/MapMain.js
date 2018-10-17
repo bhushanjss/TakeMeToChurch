@@ -10,6 +10,10 @@ import { handleMapSearchInputChange, handleMapSearch, getPlaceDetails,
 
 class MapMain extends Component {
 
+  static navigationOptions = {
+    drawerLabel: () => null
+  }
+
   handleMapSearchInputChange(text) {
     this.props.handleMapSearchInputChange(text);
   }
@@ -72,8 +76,8 @@ class MapMain extends Component {
         >
           <Marker
             coordinate={churchDetails.latlang}
-            title={churchDetails.name}
-            description={churchDetails.formatted_address}
+            title={churchDetails.churchName}
+            description={churchDetails.formattedAddress}
             image={churchDetails.icon}
           />
         </MapView>
@@ -179,7 +183,7 @@ const mapStateToProps = state => {
     churchDetails: state.maps.churchDetails,
     dropdownDefaultValue: ((dropdownListFiltered[0] && dropdownListFiltered[0].value)  || ''),
     dropdownVisible: (dropdownListFiltered.length > 0 ? true: false),
-    showAdd: state.maps.churchDetails.name
+    showAdd: state.maps.churchDetails.churchName
   };
 };
 

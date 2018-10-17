@@ -33,6 +33,11 @@ export const UPLOAD_IMAGE_SUCCESS = 'upload_image_success';
 export const UPLOAD_IMAGE_FAILED = 'upload_image_failed';
 
 //profile church form
+export const PROFILE_SAVE_MASS_TIME = 'profile_save_mass_time';
+export const PROFILE_SAVE_CHURCH = 'profile_save_church';
+export const PROFILE_SAVE_CHURCH_SUCCESS = 'profile_save_church_success';
+export const PROFILE_SAVE_CHURCH_FAILED = 'profile_save_church_failed';
+export const PROFILE_EDIT_CHURCH = 'profile_edit_church';
 
 
 //add church form

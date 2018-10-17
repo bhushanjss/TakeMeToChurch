@@ -7,12 +7,25 @@ import { CHURCH_NAME_CHANGE, CHURCH_PHONE_NUMBER_CHANGE, CHURCH_STREET_CHANGE,
   import { removeElement } from '../util/util';
 
 const INITIAL_STATE = {
-  churchName: '',
-  churchPhoneNumber: '',
-  churchStreet: '',
-  churchCity: '',
-  churchState: '',
-  churchZip: '',
+  churchDetails: {
+    latlang: {
+      latitude: 39.7648686,
+      longitude: -86.1616275
+    },
+    churchName: '',
+    churchPhoneNumber: '',
+    formattedAddress: '',
+    churchAddress: {
+      churchStreet: '',
+      churchCity: '',
+      churchState: '',
+      churchZip: '',
+      churchCountry: ''
+    },
+    icon: '',
+    placeId: '',
+    website: ''
+  }, 
   massTime: 'SUN 12:00 PM',
   massTimes: [],
   addMassTime: false,
@@ -45,7 +58,7 @@ export default (state = INITIAL_STATE, action) => {
     case MASS_TIME_CHANGE:
       return { ...state, massTime: action.payload };
     case ADD_CHURCH_DETAILS:
-      return { ...action.payload, error: '', loading: '', massTime: 'SUN 12:00 PM', massTimes: [], addMassTime: false }  
+      return { ...state, churchDetails: action.payload };  
     case SAVE_CHURCH_SUCCESS:
       return INITIAL_STATE;  
     default:

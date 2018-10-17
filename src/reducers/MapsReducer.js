@@ -12,10 +12,10 @@ const INITIAL_STATE = {
 			latitude: 39.7648686,
 			longitude: -86.1616275
 		},
-		name: '',
-		formatted_phone_number: '',
-		formatted_address: '',
-		address_components: {},
+		churchName: '',
+		churchPhoneNumber: '',
+		formattedAddress: '',
+		churchAddress: {},
 		icon: '',
 		placeId: '',
 		website: ''
@@ -44,12 +44,12 @@ export default (state = INITIAL_STATE, action) => {
 }
 
 const getChurchDetails = (data) => ({
-	name: data.name,
-	formatted_phone_number: data.formatted_phone_number,
-	formatted_address: data.formatted_address,
-	address_components: data.address_components,
+	latlang: { latitude: data.geometry.location.lat, longitude: data.geometry.location.lng },
+	churchName: data.name,
+	churchPhoneNumber: data.formatted_phone_number,
+	formattedAddress: data.formatted_address,
+	churchAddress: data.address_components,
 	icon: data.icon,
 	placeId: data.place_id,
-	latlang: { latitude: data.geometry.location.lat, longitude: data.geometry.location.lng },
 	website: data.website
 });

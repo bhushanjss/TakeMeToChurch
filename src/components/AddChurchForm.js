@@ -20,6 +20,7 @@ class AddChurchForm extends Component {
     headerTitleStyle: {
       fontWeight: 'bold',
     },
+    drawerLabel: () => null
   };
 
   churchNameChange(text) {
@@ -63,11 +64,8 @@ class AddChurchForm extends Component {
   }
 
   saveChurch() {
-    const { churchName, churchPhoneNumber, churchStreet, churchCity, churchState,
-       churchZip, addMassTime, massTimes, error, loading } = this.props;
-    this.props.saveChurch({ churchName, churchPhoneNumber, churchStreet,
-      churchCity, churchState, churchZip, massTimes
-    });
+    const { churchDetails, massTimes } = this.props;
+    this.props.saveChurch({ ...churchDetails, massTimes });
   }
 
   renderDateItem() {
@@ -198,18 +196,23 @@ class AddChurchForm extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-  churchName: state.addChurchForm.churchName,
-  churchPhoneNumber: state.addChurchForm.churchPhoneNumber,
-  churchStreet: state.addChurchForm.churchStreet,
-  churchCity: state.addChurchForm.churchCity,
-  churchState: state.addChurchForm.churchState,
-  churchZip: state.addChurchForm.churchZip,
-  massTime: state.addChurchForm.massTime,
-  massTimes: state.addChurchForm.massTimes,
-  addMassTime: state.addChurchForm.addMassTime,
-  error: state.addChurchForm.error
-});
+const mapStateToProps = state => {
+  console.log(state);
+    return {
+    churchDetails: state.addChurchForm.churchDetails,
+    churchName: state.addChurchForm.churchDetails.churchName,
+    churchPhoneNumber: state.addChurchForm.churchDetails.churchPhoneNumber,
+    churchStreet: state.addChurchForm.churchDetails.churchAddress.churchStreet,
+    churchCity: state.addChurchForm.churchDetails.churchAddress.churchCity,
+    churchState: state.addChurchForm.churchDetails.churchAddress.churchState,
+    churchZip: state.addChurchForm.churchDetails.churchAddress.churchZip,
+    churchCountry: state.addChurchForm.churchDetails.churchAddress.churchCountry,
+    massTime: state.addChurchForm.massTime,
+    massTimes: state.addChurchForm.massTimes,
+    addMassTime: state.addChurchForm.addMassTime,
+    error: state.addChurchForm.error
+  };
+};
 
 const styles = StyleSheet.create({
   inputContainerStyle: {
