@@ -20,7 +20,11 @@
 {
   [FIRApp configure];
   NSURL *jsCodeLocation;
-  [GMSServices provideAPIKey:@"YOUR_KEY_LOL"];
+  NSBundle* mainBundle = [NSBundle mainBundle];
+  NSString *path = [mainBundle pathForResource: @"GoogleService-Info" ofType: @"plist"];
+  NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile: path];
+  id googleAPIKey = [dict objectForKey: @"API_KEY"];
+  [GMSServices provideAPIKey:googleAPIKey];
 
   jsCodeLocation = [[RCTBundleURLProvider sharedSettings] jsBundleURLForBundleRoot:@"index" fallbackResource:nil];
 
