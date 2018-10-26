@@ -66,7 +66,7 @@ class MapMain extends Component {
 		<View style={styles.overallViewContainer}>
         <MapView 
           ref={map => {this.map = map}}
-          // provider={PROVIDER_GOOGLE}
+          provider={PROVIDER_GOOGLE}
           showsUserLocation={true}
           minZoomLevel={13}
           maxZoomLevel={20}

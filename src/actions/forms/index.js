@@ -14,7 +14,9 @@ import { EMAIL_CHANGE, PASSWORD_CHANGE, CONFIRM_PASSWORD_CHANGE,
   CHURCH_STREET_CHANGE, CHURCH_CITY_CHANGE, CHURCH_STATE_CHANGE, CHURCH_ZIP_CHANGE,
   MASS_TIME_CHANGE, ADD_MASS_TIME, DELETE_MASS_TIME, SAVE_MASS_TIME, SAVE_CHURCH,
   SAVE_CHURCH_SUCCESS, SAVE_CHURCH_FAILED, UPLOAD_IMAGE, UPLOAD_IMAGE_SUCCESS,
-  UPLOAD_IMAGE_FAILED, PROFILE_SAVE_MASS_TIME } from './types';
+  UPLOAD_IMAGE_FAILED, PROFILE_SAVE_MASS_TIME, PROFILE_CHURCH_DELETE_MASS_TIME, PROFILE_SAVE_CHURCH,
+  PROFILE_SAVE_CHURCH_SUCCESS, PROFILE_SAVE_CHURCH_FAILED, LOAD_PROFILE_CHURCH, 
+  LOAD_PROFILE_CHURCH_SUCCESS, CHURCH_MASS_DETAILS_SUCCESS } from './types';
   import { UPDATE_PROFILE_IMAGE_URL } from '../entities/types';
 
 //login form
@@ -157,9 +159,40 @@ export const saveChurch = (church) => (
 );
 
 //profile church form
+export const profileAddMassDropdown = text => action(PROFILE_SAVE_MASS_TIME, text);
+export const profileChurchDeleteMassTime = text => action(PROFILE_CHURCH_DELETE_MASS_TIME, text);
 export const churchLookUp = () => (
   (dispatch) => {
     NavigationService.navigate('MapMain');
-  }  
+  }
 );
-export const profileAddMassDropdown = text => action(PROFILE_SAVE_MASS_TIME, text);
+export const loadProfileChurches = () => (
+  (dispatch) => {    
+    const { currentUser } = firebase.auth();
+    dispatch(action(LOAD_PROFILE_CHURCH));
+    firebase.database().ref(`/profiles/${currentUser.uid}/churches`)
+    .on('value', snapshot => {
+        dispatch(action(LOAD_PROFILE_CHURCH_SUCCESS, snapshot.val()));     
+    });
+  }
+);
+export const saveProfileChurches = (churches) => (
+  (dispatch) => {
+    const { currentUser } = firebase.auth();
+    dispatch(action(PROFILE_SAVE_CHURCH));
+    firebase.database().ref(`/profiles/${currentUser.uid}/churches`)
+    .set(churches)
+    .then(() => {
+      dispatch(action(PROFILE_SAVE_CHURCH_SUCCESS, churches));
+    });
+  }
+);
+
+export const editChurchMass = (placeId) => (
+  (dispatch) => {
+    firebase.database().ref(`/churches/${placeId}`)
+      .on('value', snapshot => {
+          dispatch(action(CHURCH_MASS_DETAILS_SUCCESS, snapshot.val()));
+      });
+  }
+)

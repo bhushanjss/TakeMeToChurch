@@ -56,7 +56,7 @@ export const getPlaceDetails = (placeId) => (
 	      }      
 	    });
 	}
-)
+);
 
 export const addChurchDetails = (churchDetails) => (
 	(dispatch) => {

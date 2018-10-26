@@ -6,7 +6,8 @@ import { Input, Icon, Button, Text } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import DatePicker from 'react-native-datepicker';
 
-import { churchLookUp, profileAddMassDropdown } from '../actions/forms/';
+import { churchLookUp, profileAddMassDropdown, profileChurchDeleteMassTime,
+ saveProfileChurches, loadProfileChurches, editChurchMass } from '../actions/forms/';
 
 import { Card, CardSection, Header } from './common';
 class ProfileChurchForm extends Component {
@@ -22,6 +23,10 @@ class ProfileChurchForm extends Component {
     },
   };
 
+  componentWillMount() {
+    this.props.loadProfileChurches();
+  }
+
   churchLookUp() {
     this.props.churchLookUp();
   }
@@ -30,8 +35,23 @@ class ProfileChurchForm extends Component {
     this.props.profileAddMassDropdown(value);
   }
 
-  saveChurch() {
+  deleteMassTime(val) {
+    this.props.profileChurchDeleteMassTime(val);
+  }
 
+  editChurchMassTime(placeId) {
+    this.props.editChurchMass(placeId);
+  }
+
+  saveChurch() {
+    const { myChurches, editChurchName, editChurchCity, selectedMassTimes, editChurchPlaceId } = this.props;
+    const church = {
+      churchName: editChurchName,
+      churchCity: editChurchCity,
+      massTimes: selectedMassTimes,
+      churchPlaceId: editChurchPlaceId
+    };
+    this.props.saveProfileChurches([church, ...myChurches]);
   }
 
   churchItem = ({item}) => {
@@ -41,11 +61,13 @@ class ProfileChurchForm extends Component {
       <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start' }}>
         <View style={{ paddingLeft: 10 }}>
           <Text h4>{item.churchName}</Text>
+          <Text>{item.churchCity}</Text>
           <View style={{ flex: 1, paddingBottom: 5, justifyContent: 'flex-start' }}>
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-              <Text style={{ fontWeight: '700' }}>Mass Time:</Text>
+              <Text style={{ fontWeight: '500', paddingTop: 5, paddingBottom: 5 }}>Mass Time:</Text>
               <Button
                 icon={<Icon name='edit' size={24} /> }
+                onPress={this.editChurchMassTime.bind(this, item.churchPlaceId)}
                 title=''
                 buttonStyle={{ backgroundColor: 'white',
                  marginRight: 10 }}
@@ -55,7 +77,7 @@ class ProfileChurchForm extends Component {
               <FlatList
               data={item.massTimes}
               renderItem={(val) => (
-                <View style={{ flex: 1, paddingTop: 5, flexDirection: 'row',
+                <View style={{ flex: 1, paddingBottom: 5, flexDirection: 'row',
                  justifyContent: 'space-between' }}>
                   <Text>{val.item}</Text>
                 </View>
@@ -70,7 +92,7 @@ class ProfileChurchForm extends Component {
   };
 
   editChurch() {
-    const { editChurchName, selectedMassTimes } = this.props;
+    const { editChurchName, selectedMassTimes, editChurchCity } = this.props;
     if(editChurchName) {
     return (
      <CardSection>
@@ -78,24 +100,28 @@ class ProfileChurchForm extends Component {
         <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start' }}>
           <View style={{ paddingLeft: 10 }}>
             <Text h4>{editChurchName}</Text>
+            <Text>{editChurchCity}</Text>
             <View style={{ flex: 1, paddingBottom: 5, justifyContent: 'flex-start' }}>
               <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
-                <Text style={{ fontWeight: '700', paddingTop: 5 }}>Mass Time:</Text>
+                <Text style={{ fontWeight: '500', paddingTop: 5, paddingBottom: 5 }}>Mass Time:</Text>
               </View>  
-              <FlatList
-              data={selectedMassTimes}
-              renderItem={(val) => (
-                <View style={{ flex: 1, paddingTop: 5, flexDirection: 'row',
-                 justifyContent: 'space-between' }}>
-                  <Text>{val.item}</Text>
-                  <Button
-                    title=''
-                    style={{ paddingLeft: 10}}
-                    buttonStyle={{ backgroundColor: 'white', marginRight: 10 }}
-                    icon={<Icon name='clear' size={24} />}
-                    />
-                </View>
-              )} />
+              <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start' }}>
+                <FlatList
+                data={selectedMassTimes}
+                renderItem={(val) => (
+                  <View style={{ flex: 1, flexDirection: 'row',
+                   justifyContent: 'space-between' }}>
+                    <Text>{val.item}</Text>
+                    <Button
+                      title=''
+                      onPress={this.deleteMassTime.bind(this, val.item)}
+                      style={{ paddingLeft: 10}}
+                      buttonStyle={{ backgroundColor: 'white', marginRight: 10 }}
+                      icon={<Icon name='clear' size={20} />}
+                      />
+                  </View>
+                )} />
+              </View>  
             </View>
           </View>       
         </View> 
@@ -116,6 +142,7 @@ class ProfileChurchForm extends Component {
   massDropDown() {
     const { dropdowList, showDropDown } = this.props;
     if(showDropDown) {
+      const dropDownValue = dropdowList[0].value;
       return (
         <View style={{ flex: 1, paddingLeft: 10, paddingRight: 10,
          flexDirection: 'column', justifyContent: 'flex-start' }}>
@@ -129,14 +156,14 @@ class ProfileChurchForm extends Component {
 
   renderChurchList() {
 
-    const { myChurches } = this.props;
+    const { myChurches, showMyChurches } = this.props;
     const noListMsg = 'No Church Found. Please Add One!';
 
-    if(myChurches.length > 0) {
+    if(showMyChurches) {
       return (
         <FlatList
           data={myChurches}
-          keyExtractor={(item, index) => item.churchName}
+          keyExtractor={(item, index) => item.churchPlaceId}
           renderItem={this.churchItem}
         />
       )
@@ -180,7 +207,9 @@ const styles = StyleSheet.create({
 
 const mapStatesToProps = state => ({
   myChurches: state.profileChurch.myChurches,
+  showMyChurches: state.profileChurch.myChurches && state.profileChurch.myChurches.length,
   editChurchName: state.profileChurch.editChurchName,
+  editChurchCity: state.profileChurch.editChurchCity,
   selectedMassTimes: state.profileChurch.selectedMassTimes,
   editChurchPlaceId: state.profileChurch.editChurchPlaceId,
   dropdowList: _.map(state.profileChurch.editChurchMassTimes,
@@ -191,5 +220,9 @@ const mapStatesToProps = state => ({
 
 export default connect(mapStatesToProps, {
   churchLookUp,
-  profileAddMassDropdown
+  profileAddMassDropdown,
+  profileChurchDeleteMassTime,
+  saveProfileChurches, 
+  loadProfileChurches,
+  editChurchMass
 })(ProfileChurchForm);

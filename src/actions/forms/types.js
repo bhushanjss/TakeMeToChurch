@@ -38,7 +38,11 @@ export const PROFILE_SAVE_CHURCH = 'profile_save_church';
 export const PROFILE_SAVE_CHURCH_SUCCESS = 'profile_save_church_success';
 export const PROFILE_SAVE_CHURCH_FAILED = 'profile_save_church_failed';
 export const PROFILE_EDIT_CHURCH = 'profile_edit_church';
-
+export const PROFILE_CHURCH_DELETE_MASS_TIME = 'profile_church_delete_mass_time';
+export const LOAD_PROFILE_CHURCH = 'load_profile_church';
+export const LOAD_PROFILE_CHURCH_SUCCESS = 'load_profile_church_success';
+export const LOAD_PROFILE_CHURCH_FAILED = 'load_profile_church_failed';
+export const CHURCH_MASS_DETAILS_SUCCESS = 'church_mass_details_success';
 
 //add church form
 export const CHURCH_NAME_CHANGE = 'church_name';
