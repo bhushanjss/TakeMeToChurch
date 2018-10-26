@@ -1,7 +1,6 @@
-import { MAPS_INPUT_CHANGE, MAPS_AUTOCOMPLETE_SUBMIT, 
-	MAPS_AUTOCOMPLETE_SUBMIT_SUCCESS, MAPS_AUTOCOMPLETE_SUBMIT_FAILED, 
-	MAPS_PLACE_DETAILS, MAPS_PLACE_DETAILS_SUCCESS, 
-	MAPS_PLACE_DETAILS_FAILED 
+import { MAPS_INPUT_CHANGE, MAPS_AUTOCOMPLETE_SUBMIT, MAPS_AUTOCOMPLETE_SUBMIT_SUCCESS,
+ MAPS_AUTOCOMPLETE_SUBMIT_FAILED, MAPS_PLACE_DETAILS, MAPS_PLACE_DETAILS_SUCCESS, 
+ MAPS_PLACE_DETAILS_FAILED, MAPS_INPUT_CLEAR 
 } from '../actions/services/types';
 
 const INITIAL_STATE = {
@@ -31,13 +30,15 @@ export default (state = INITIAL_STATE, action) => {
 		case MAPS_AUTOCOMPLETE_SUBMIT:
 			return { ...state, loading: true };	
 		case MAPS_AUTOCOMPLETE_SUBMIT_SUCCESS:
-			return { ...state, loading: false, autoCompleteList: action.payload };
+			return { ...state, loading: false, mapsInput: '',  autoCompleteList: action.payload };
 		case MAPS_AUTOCOMPLETE_SUBMIT_FAILED:
 			return { ...state, loading: false, error: action.payload };
 		case MAPS_PLACE_DETAILS:
 			return { ...state, loading: true }
 		case MAPS_PLACE_DETAILS_SUCCESS:
-			return { ...state, loading: false, churchDetails: getChurchDetails(action.payload) }				
+			return { ...state, loading: false, mapsInput: '', churchDetails: getChurchDetails(action.payload) }	
+		case MAPS_INPUT_CLEAR:
+			return { ...state, mapsInput: ''};				
 		default:
 			return state;
 	}	

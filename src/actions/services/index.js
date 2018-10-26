@@ -8,11 +8,12 @@ import NavigationService from '../../NavigationService';
 
 import { MAPS_INPUT_CHANGE, MAPS_AUTOCOMPLETE_SUBMIT, MAPS_AUTOCOMPLETE_SUBMIT_SUCCESS,
 MAPS_AUTOCOMPLETE_SUBMIT_FAILED, MAPS_PLACE_DETAILS, MAPS_PLACE_DETAILS_SUCCESS,
-MAPS_PLACE_DETAILS_FAILED, ADD_CHURCH_DETAILS, PLACE_DETAILS_SUCCESS
+MAPS_PLACE_DETAILS_FAILED, ADD_CHURCH_DETAILS, PLACE_DETAILS_SUCCESS, MAPS_INPUT_CLEAR
 } from './types';
 
 
 export const handleMapSearchInputChange = (text) => action(MAPS_INPUT_CHANGE, text);
+export const clearMapSearchInput = () => action(MAPS_INPUT_CLEAR);
 
 export const handleMapSearch = (textInput) => (
 	(dispatch) => {

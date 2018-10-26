@@ -4,9 +4,10 @@ import { connect } from 'react-redux';
 import _ from 'lodash';
 import MapView, { PROVIDER_GOOGLE, Marker } from 'react-native-maps';
 import { Dropdown } from 'react-native-material-dropdown';
+import { SearchBar } from 'react-native-elements';
 
 import { handleMapSearchInputChange, handleMapSearch, getPlaceDetails,
- addChurchDetails } from '../actions/services';
+ addChurchDetails, clearMapSearchInput } from '../actions/services';
 
 class MapMain extends Component {
 
@@ -16,6 +17,10 @@ class MapMain extends Component {
 
   handleMapSearchInputChange(text) {
     this.props.handleMapSearchInputChange(text);
+  }
+
+  handleMapSearchClear() {
+    this.props.clearMapSearchInput();
   }
 
   handleMapSearch() {
@@ -60,7 +65,7 @@ class MapMain extends Component {
   }
 
 	render() {
-    const { churchDetails } = this.props;
+    const { churchDetails, mapsInput } = this.props;
 
 		return (
 		<View style={styles.overallViewContainer}>
@@ -82,15 +87,18 @@ class MapMain extends Component {
           />
         </MapView>
         <View style={styles.allNonMapThings}>
-          <View style={styles.inputContainer}>
-            <TextInput
-              placeholder='Type Church Name then press Enter'
-              style={styles.input}
-              onChangeText={ this.handleMapSearchInputChange.bind(this) }
-              value={ this.props.mapsInput}
-              onSubmitEditing={ this.handleMapSearch.bind(this) }
+            <SearchBar
+              ref={search => this.search = search}
+              containerStyle={styles.inputContainer}
+              inputStyle={styles.input}
+              autoFocus={true}
+              lightTheme={true}
+              onChangeText={this.handleMapSearchInputChange.bind(this)}
+              onClear={this.handleMapSearchClear.bind(this)}
+              value={mapsInput}
+              placeholder='Type Name and City then press Enter' 
+              onSubmitEditing={this.handleMapSearch.bind(this)}
             />
-          </View>
           {this.showDropdown()}
           {this.showAddButton()}                
       </View>
@@ -115,13 +123,16 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between'
   },
-  input: {
+  inputContainer: {
+    padding: 1,
     elevation: 1,
+    width: '90%',
+    height: 34,
+    marginTop: 10
+  },
+  input: {
     width: '99%',
-    marginTop: 'auto',
-    marginBottom: 'auto',
-    marginLeft: 'auto',
-    marginRight: 'auto',
+    elevation: 1,
     padding: 5
   },
   allNonMapThings: {
@@ -129,23 +140,11 @@ const styles = StyleSheet.create({
     height: '100%',
     width: '100%'
   },
-  inputContainer: {
-    elevation: 1,
-    backgroundColor: 'white',
-    width: '90%',
-    height: '6%',
-    top: 40,
-    borderRadius: 3,
-    shadowOpacity: 0.75,
-    shadowRadius: 1,
-    shadowColor: 'gray',
-    shadowOffset: { height: 0, width: 0}
-  },
   dropdowContainer: {
     elevation: 1,
     backgroundColor: 'white',
     width: '90%',
-    top: 45,
+    top: 5,
     padding: 5
   },
   button: {
@@ -191,5 +190,6 @@ export default connect(mapStateToProps, {
   handleMapSearchInputChange,
   handleMapSearch,
   getPlaceDetails,
-  addChurchDetails
+  addChurchDetails,
+  clearMapSearchInput
 })(MapMain);
