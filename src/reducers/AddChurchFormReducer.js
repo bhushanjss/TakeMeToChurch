@@ -35,7 +35,6 @@ const INITIAL_STATE = {
 
 export default (state = INITIAL_STATE, action) => {
   console.log(action);
-  console.log(state);
   switch (action.type) {
     case CHURCH_NAME_CHANGE:
       return { ...state, churchName: action.payload };

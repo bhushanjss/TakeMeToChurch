@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, ScrollView } from 'react-native';
+import { View, ScrollView, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Card, Avatar, Text, Icon } from 'react-native-elements';
@@ -66,6 +66,30 @@ class Profile extends Component {
           />);
   }
 
+  renderChurch() {
+    const { defaultChurch } = this.props;
+    if(defaultChurch) {
+      return (
+        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', padding: 10 }}>
+          <Icon name='home' />
+          <View style={{ paddingLeft: 30 }}>
+            <Text>{defaultChurch.churchName}</Text>
+            <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start' }}>
+                <FlatList
+                data={defaultChurch.massTimes}
+                renderItem={(val) => (
+                  <View style={{ flex: 1, flexDirection: 'row',
+                   justifyContent: 'space-between' }}>
+                    <Text>{val.item}</Text>
+                  </View>
+                )} />
+            </View>   
+          </View>
+        </View>
+      );
+    }
+  }
+
   render() {
     const { firstName, lastName, phoneNumber, street, apt, city, state, zip,
       carModel, carSeats, isChecked
@@ -92,18 +116,8 @@ class Profile extends Component {
             <Text>{city}</Text>
             <Text>{state} {zip}</Text>
           </View>
-        </View>
-        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', padding: 10 }}>
-          <Icon name='home' />
-          <View style={{ paddingLeft: 30 }}>
-            <Text>St Johns Catholic Church</Text>
-            <View style={{ flex: 1, justifyContent: 'flex-start' }}>
-              <Text>Mass Time:</Text>
-              <Text>Sunday 11:00 AM</Text>
-              <Text>Sunday 7:00 PM</Text>
-            </View>
-          </View>
-        </View>
+        </View>    
+        {this.renderChurch()}    
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', padding: 10 }}>
           <Icon name='train' />
           <View style={{ paddingLeft: 30 }}>
@@ -131,7 +145,8 @@ const mapStateToProps = state => {
     carModel: profile.carModel,
     carSeats: profile.carSeats,
     isChecked: profile.isChecked,
-    profileImgUrl: state.entities.profileImgUrl
+    profileImgUrl: state.entities.profileImgUrl,
+    defaultChurch: profile.churches ? profile.churches[0] : null 
   };
 };
 

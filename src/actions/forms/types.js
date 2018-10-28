@@ -43,6 +43,7 @@ export const LOAD_PROFILE_CHURCH = 'load_profile_church';
 export const LOAD_PROFILE_CHURCH_SUCCESS = 'load_profile_church_success';
 export const LOAD_PROFILE_CHURCH_FAILED = 'load_profile_church_failed';
 export const CHURCH_MASS_DETAILS_SUCCESS = 'church_mass_details_success';
+export const CHURCH_MAKE_DEFAULT = 'church_make_default';
 
 //add church form
 export const CHURCH_NAME_CHANGE = 'church_name';

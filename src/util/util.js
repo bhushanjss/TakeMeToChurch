@@ -22,3 +22,11 @@ export const findElement = (arr, val, key) => (
 		item[key] === val
 	))
 );
+
+export const unsetDefaultValues = (arr, key) => (
+	_.map(arr, item => {
+		let obj = {...item};
+		obj[key]= undefined;
+		return obj;
+	})
+);

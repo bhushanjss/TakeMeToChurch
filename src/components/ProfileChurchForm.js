@@ -7,7 +7,7 @@ import { Dropdown } from 'react-native-material-dropdown';
 import DatePicker from 'react-native-datepicker';
 
 import { churchLookUp, profileAddMassDropdown, profileChurchDeleteMassTime,
- saveProfileChurches, loadProfileChurches, editChurchMass } from '../actions/forms/';
+ saveProfileChurches, loadProfileChurches, editChurchMass, profileChurchMakeDefault } from '../actions/forms/';
 
 import { Card, CardSection, Header } from './common';
 class ProfileChurchForm extends Component {
@@ -39,19 +39,27 @@ class ProfileChurchForm extends Component {
     this.props.profileChurchDeleteMassTime(val);
   }
 
+  makeDefault() {
+    this.props.profileChurchMakeDefault();    
+  }
+
   editChurchMassTime(placeId) {
     this.props.editChurchMass(placeId);
   }
 
   saveChurch() {
-    const { myChurches, editChurchName, editChurchCity, selectedMassTimes, editChurchPlaceId } = this.props;
+    const { myChurches, editChurchName, editChurchCity, selectedMassTimes, editChurchDefault, editChurchPlaceId } 
+    = this.props;
     const church = {
       churchName: editChurchName,
       churchCity: editChurchCity,
       massTimes: selectedMassTimes,
-      churchPlaceId: editChurchPlaceId
+      churchPlaceId: editChurchPlaceId,
+      churchDefault: editChurchDefault
     };
-    this.props.saveProfileChurches([church, ...myChurches]);
+    const churches = myChurches ? ( editChurchDefault ? [church, ...myChurches] : 
+      [ ...myChurches, church]) : [church];
+    this.props.saveProfileChurches(churches);
   }
 
   churchItem = ({item}) => {
@@ -92,7 +100,7 @@ class ProfileChurchForm extends Component {
   };
 
   editChurch() {
-    const { editChurchName, selectedMassTimes, editChurchCity } = this.props;
+    const { editChurchName, selectedMassTimes, editChurchCity, editChurchDefault } = this.props;
     if(editChurchName) {
     return (
      <CardSection>
@@ -128,10 +136,17 @@ class ProfileChurchForm extends Component {
         { this.massDropDown() }
         <View style={{ flex: 1, paddingLeft: 10, paddingRight: 10 }}>
         <Button
+          style={{ paddingBottom:10 }}
+          icon={<Icon name='save' size={24} color='white' />}
+          title='Make Default'
+          disabled={editChurchDefault}
+          onPress={this.makeDefault.bind(this)}
+          />
+        <Button
           icon={<Icon name='save' size={24} color='white' />}
           title='SAVE'
           onPress={this.saveChurch.bind(this)}
-          />
+          />        
         </View>                    
       </View>       
     </CardSection> 
@@ -212,6 +227,7 @@ const mapStatesToProps = state => ({
   editChurchCity: state.profileChurch.editChurchCity,
   selectedMassTimes: state.profileChurch.selectedMassTimes,
   editChurchPlaceId: state.profileChurch.editChurchPlaceId,
+  editChurchDefault: state.profileChurch.editChurchDefault,
   dropdowList: _.map(state.profileChurch.editChurchMassTimes,
    val => ( { value: val } )),
   showDropDown: state.profileChurch.editChurchMassTimes.length
@@ -224,5 +240,6 @@ export default connect(mapStatesToProps, {
   profileChurchDeleteMassTime,
   saveProfileChurches, 
   loadProfileChurches,
-  editChurchMass
+  editChurchMass,
+  profileChurchMakeDefault
 })(ProfileChurchForm);
