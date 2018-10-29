@@ -51,14 +51,14 @@ class ProfileForm extends Component {
 
   saveProfile() {
     const { firstName, lastName, phoneNumber, street, apt, city, state, zip,
-      isChecked, carModel, carSeats, profileId } = this.props;
+      isChecked, carModel, carSeats, profileId, churches } = this.props;
       if (isChecked) {
         this.props.saveProfile({ firstName, lastName, phoneNumber, street, apt,
-        city, state, zip, carModel, carSeats, isChecked, profileId }, { firstName, lastName,
-        phoneNumber, zip, carModel, carSeats, isChecked, profileId }, isChecked);
+        city, state, zip, carModel, carSeats, isChecked, profileId, churches }, { firstName, lastName,
+        phoneNumber, zip, carModel, carSeats, isChecked, profileId, churches }, isChecked);
       } else {
         this.props.saveProfile({ firstName, lastName, phoneNumber, street, apt,
-        city, state, zip, isChecked, profileId });
+        city, state, zip, isChecked, profileId, churches });
       }
   }
 
@@ -205,7 +205,8 @@ const mapStateToProps = state => ({
   carModel: state.profileForm.carModel,
   carSeats: state.profileForm.carSeats,
   isChecked: state.profileForm.isChecked,
-  profileId: state.profileForm.profileId
+  profileId: state.profileForm.profileId,
+  churches: state.entities.profile.churches
 });
 
 const styles = StyleSheet.create({

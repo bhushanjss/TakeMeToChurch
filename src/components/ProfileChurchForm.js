@@ -48,7 +48,8 @@ class ProfileChurchForm extends Component {
   }
 
   saveChurch() {
-    const { myChurches, editChurchName, editChurchCity, selectedMassTimes, editChurchDefault, editChurchPlaceId } 
+    const { myChurches, editChurchName, editChurchCity, selectedMassTimes, editChurchDefault, 
+      editChurchPlaceId, isChecked } 
     = this.props;
     const church = {
       churchName: editChurchName,
@@ -59,7 +60,7 @@ class ProfileChurchForm extends Component {
     };
     const churches = myChurches ? ( editChurchDefault ? [church, ...myChurches] : 
       [ ...myChurches, church]) : [church];
-    this.props.saveProfileChurches(churches);
+    this.props.saveProfileChurches(churches, isChecked);
   }
 
   churchItem = ({item}) => {
@@ -227,10 +228,11 @@ const mapStatesToProps = state => ({
   editChurchCity: state.profileChurch.editChurchCity,
   selectedMassTimes: state.profileChurch.selectedMassTimes,
   editChurchPlaceId: state.profileChurch.editChurchPlaceId,
-  editChurchDefault: state.profileChurch.editChurchDefault,
+  editChurchDefault: state.profileChurch.editChurchDefault || !state.profileChurch.myChurches,
   dropdowList: _.map(state.profileChurch.editChurchMassTimes,
    val => ( { value: val } )),
-  showDropDown: state.profileChurch.editChurchMassTimes.length
+  showDropDown: state.profileChurch.editChurchMassTimes.length,
+  isChecked: state.entities.profile.isChecked
 });
 
 

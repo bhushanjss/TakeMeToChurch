@@ -90,6 +90,19 @@ class Profile extends Component {
     }
   }
 
+  renderCar() {
+    const { isChecked, carModel, carSeats } = this.props;
+    if(isChecked) {
+      return (<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', padding: 10 }}>
+          <Icon name='train' />
+          <View style={{ paddingLeft: 30 }}>
+            <Text>{carModel}</Text>
+            <Text>{carSeats} Seats</Text>
+          </View>
+        </View>)
+    }
+  }
+
   render() {
     const { firstName, lastName, phoneNumber, street, apt, city, state, zip,
       carModel, carSeats, isChecked
@@ -117,14 +130,8 @@ class Profile extends Component {
             <Text>{state} {zip}</Text>
           </View>
         </View>    
-        {this.renderChurch()}    
-        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', padding: 10 }}>
-          <Icon name='train' />
-          <View style={{ paddingLeft: 30 }}>
-            <Text>{carModel}</Text>
-            <Text>{carSeats} Seats</Text>
-          </View>
-        </View>
+        {this.renderChurch()}  
+        {this.renderCar()}  
         </Card>
       </ScrollView>
     );

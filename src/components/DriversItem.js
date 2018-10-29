@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Linking } from 'react-native';
+import { View, Linking, FlatList } from 'react-native';
 import { Avatar, Text, Icon } from 'react-native-elements';
 import { Card, CardSection } from './common';
 
@@ -44,8 +44,33 @@ class DriversItem extends Component {
             />);
   }
 
+  renderChurch() {
+    const { churches } = this.props.driver;
+    const defaultChurch = churches ? churches[0] : null;
+    if(defaultChurch) {
+      return (
+        <CardSection>
+        <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start', padding: 10 }}>
+          <Text>{defaultChurch.churchName}</Text>
+          <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start' }}>
+              <FlatList
+              data={defaultChurch.massTimes}
+              renderItem={(val) => (
+                <View style={{ flex: 1, flexDirection: 'row',
+                 justifyContent: 'space-between' }}>
+                  <Text>{val.item}</Text>
+                </View>
+              )} />
+          </View> 
+        </View>
+        </CardSection>
+      );
+    }
+  }
+
   render() {
-    const { firstName, lastName, carModel, carSeats, profileImgUrl } = this.props.driver;
+    const { firstName, lastName, carModel, carSeats, profileImgUrl, churches } = this.props.driver;
+    
     return (
       <Card>
           <CardSection>
@@ -67,15 +92,7 @@ class DriversItem extends Component {
             </View>
           </View>
           </CardSection>
-          <CardSection>
-             <View style={{ flex: 1, paddingLeft: 20 }}>
-                <Text>St Johns Catholic Church</Text>
-                <View style={{ flex: 1, justifyContent: 'flex-start' }}>
-                  <Text>Sunday 11:00 AM</Text>
-                  <Text>Sunday 7:00 PM</Text>
-                </View>
-            </View>
-          </CardSection>
+          {this.renderChurch()}          
       </Card>
     );
   }

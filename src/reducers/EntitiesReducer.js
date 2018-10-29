@@ -13,7 +13,8 @@ const INITIAL_STATE = {
       zip: '',
       carModel: '',
       carSeats: '',
-      isChecked: false
+      isChecked: false,
+      churches: null
   },
   profileImgUrl: '',
   drivers: [],

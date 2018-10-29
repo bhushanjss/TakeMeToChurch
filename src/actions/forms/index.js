@@ -176,7 +176,7 @@ export const loadProfileChurches = () => (
     });
   }
 );
-export const saveProfileChurches = (churches) => (
+export const saveProfileChurches = (churches, isChecked) => (
   (dispatch) => {
     const { currentUser } = firebase.auth();
     dispatch(action(PROFILE_SAVE_CHURCH));
@@ -184,6 +184,14 @@ export const saveProfileChurches = (churches) => (
     .set(churches)
     .then(() => {
       dispatch(action(PROFILE_SAVE_CHURCH_SUCCESS, churches));
+      if (isChecked) {
+        dispatch(action(SAVE_DRIVER));
+        firebase.database().ref(`/drivers/${currentUser.uid}/churches`)
+        .set(churches)
+        .then(() => {
+          dispatch(action(SAVE_DRIVER_SUCCESS));
+        });
+      }
     });
   }
 );

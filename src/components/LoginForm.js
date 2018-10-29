@@ -10,6 +10,7 @@ import {
 import { Button, Icon } from 'react-native-elements';
 
 import { Card, CardSection, Input, Spinner, Header } from './common';
+import Toast from './common/Toast';
 import { emailChange, passwordChange, resetLoginForm, loginUser, loginFacebook,
    createUser, toggleAccount, confirmPasswordChange } from '../actions/forms';
 import Routes from '../Routes';
@@ -152,6 +153,15 @@ renderPassword() {
     );
   }
 
+  renderError() {
+    const { error } = this.props;
+    if(error) {
+      return(
+      <Toast msg={error} type={'error'}/>
+      )
+    }
+  }
+
   renderDisplay() {
     const { email, user } = this.props;
     if(user) {
@@ -183,24 +193,22 @@ renderPassword() {
           />
         </CardSection>
         {this.renderPassword()}
-        <Text style={styles.errorTextStyle}>
-          {this.props.error}
-        </Text>
         <CardSection>
           {this.renderButton()}
         </CardSection>
         <CardSection>
           {this.renderCreateButton()}
         </CardSection>
-    </Card>
+     </Card>
   );
 
   }
 
 	render() {
     return ( 
-    <View>    
-    { this.renderDisplay() }
+    <View style={{flex: 1, flexDirection: 'column', justifyContent: 'space-between'}}>
+      {this.renderDisplay()}
+      {this.renderError()}
     </View>
     )		
   }
