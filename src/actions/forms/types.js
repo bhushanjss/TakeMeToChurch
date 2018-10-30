@@ -9,6 +9,9 @@ export const LOGIN_USER_FAILED = 'login_user_failed';
 export const CREATE_USER = 'create_user';
 export const CREATE_USER_SUCCESS = 'create_user_success';
 export const TOGGLE_ACCOUNT = 'toggle_account';
+export const LOGOUT_USER = 'logout_user';
+export const LOGOUT_USER_SUCCESS = 'logout_user_success';
+export const LOGOUT_USER_FAILED = 'logout_user_failed';
 
 //create profile form
 export const FIRST_NAME_CHANGE = 'first_name_change';

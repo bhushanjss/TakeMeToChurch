@@ -16,7 +16,8 @@ import { EMAIL_CHANGE, PASSWORD_CHANGE, CONFIRM_PASSWORD_CHANGE,
   SAVE_CHURCH_SUCCESS, SAVE_CHURCH_FAILED, UPLOAD_IMAGE, UPLOAD_IMAGE_SUCCESS,
   UPLOAD_IMAGE_FAILED, PROFILE_SAVE_MASS_TIME, PROFILE_CHURCH_DELETE_MASS_TIME, PROFILE_SAVE_CHURCH,
   PROFILE_SAVE_CHURCH_SUCCESS, PROFILE_SAVE_CHURCH_FAILED, LOAD_PROFILE_CHURCH, 
-  LOAD_PROFILE_CHURCH_SUCCESS, CHURCH_MASS_DETAILS_SUCCESS, CHURCH_MAKE_DEFAULT } from './types';
+  LOAD_PROFILE_CHURCH_SUCCESS, CHURCH_MASS_DETAILS_SUCCESS, CHURCH_MAKE_DEFAULT, LOGOUT_USER, 
+  LOGOUT_USER_SUCCESS, LOGOUT_USER_FAILED } from './types';
   import { UPDATE_PROFILE_IMAGE_URL } from '../entities/types';
 
 //login form
@@ -31,6 +32,15 @@ export const loginUser = ({ email, password }) => (
     return firebase.auth().signInWithEmailAndPassword(email, password)
     .then(user => loginUserSuccess(dispatch, user))
     .catch(error => loginUserFailed(dispatch, error));
+  }
+);
+
+export const logoutUser = () => (
+  (dispatch) => {
+    dispatch(action(LOGOUT_USER));
+      return firebase.auth().signOut()
+      .then(() => dispatch(action(LOGOUT_USER_SUCCESS)))
+      .catch(error => dispatch(action(LOGOUT_USER_FAILED, error)));
   }
 );
 

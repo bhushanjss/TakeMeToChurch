@@ -1,7 +1,6 @@
-import { EMAIL_CHANGE, PASSWORD_CHANGE, CONFIRM_PASSWORD_CHANGE,
-  LOGIN_USER, LOGIN_USER_SUCCESS, LOGIN_USER_FAILED,
-  CREATE_USER, CREATE_USER_SUCCESS,
-  RESET_LOGIN_FORM, TOGGLE_ACCOUNT, SAVE_PROFILE_SUCCESS } from '../actions/forms/types';
+import { EMAIL_CHANGE, PASSWORD_CHANGE, CONFIRM_PASSWORD_CHANGE, LOGIN_USER, LOGIN_USER_SUCCESS,
+ LOGIN_USER_FAILED, CREATE_USER, CREATE_USER_SUCCESS, RESET_LOGIN_FORM, TOGGLE_ACCOUNT,
+ SAVE_PROFILE_SUCCESS, LOGOUT_USER, LOGOUT_USER_SUCCESS, LOGOUT_USER_FAILED } from '../actions/forms/types';
 
 const INITIAL_STATE = {
   email: 'abc@c.com',
@@ -23,6 +22,7 @@ export default (state = INITIAL_STATE, action) => {
       return { ...state, confirmPassword: action.payload };
     case LOGIN_USER:
     case CREATE_USER:
+    case LOGOUT_USER:
       return { ...state, loading: true };
     case LOGIN_USER_SUCCESS:
       return { ...state, user: action.payload, error: '', loading: false };
@@ -32,6 +32,8 @@ export default (state = INITIAL_STATE, action) => {
         loading: false,
         password: '',
         confirmPassword: '' };
+    case LOGOUT_USER_SUCCESS:
+      return { ...state, user: null, loading: false };          
     case CREATE_USER_SUCCESS:
       return { ...state, user: action.payload, error: '', loading: false };
     case SAVE_PROFILE_SUCCESS:

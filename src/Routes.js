@@ -7,6 +7,7 @@ import AddChurchForm from './components/AddChurchForm';
 import Profile from './components/Profile';
 import Drivers from './components/Drivers';
 import MapMain from './components/MapMain';
+import Logout from './components/Logout';
 import NavigationService from './NavigationService';
 
 class Routes extends Component {
@@ -37,6 +38,9 @@ const DrawerRoutes = {
     },
     MapMain: {
       screen: MapMain
+    },
+    Logout: {
+      screen: Logout
     }
   };
 
