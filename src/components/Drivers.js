@@ -3,7 +3,7 @@ import { View, FlatList } from 'react-native';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import { Text } from 'react-native-elements';
-import { CardSection } from './common';
+import { CardSection, Header } from './common';
 import DriversItem from './DriversItem';
 import { loadDrivers } from '../actions/entities';
 
@@ -55,6 +55,7 @@ class Drivers extends Component {
   render() {
     return (
       <View>
+        <Header headerText="Drivers Nearby" />
         {this.renderList()}
       </View>
     );

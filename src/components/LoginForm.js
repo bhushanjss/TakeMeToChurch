@@ -5,7 +5,8 @@ import { FBLogin, FBLoginManager } from 'react-native-facebook-login';
 import {
   View,
   Text,
-  StyleSheet
+  StyleSheet,
+  Dimensions
 } from 'react-native';
 import { Button, Icon } from 'react-native-elements';
 
@@ -16,6 +17,8 @@ import { emailChange, passwordChange, resetLoginForm, loginUser, loginFacebook,
 import Routes from '../Routes';
 import ProfileForm from './ProfileForm';
 import NavigationService from '../NavigationService';
+
+let windowHeight = Dimensions.get('window').height
 
 class LoginForm extends Component {
 
@@ -162,28 +165,39 @@ renderPassword() {
     }
   }
 
+  renderHamburger() {
+    if(!this.props.drawerClosed) {
+      return(
+        <View style={{ height: 30, marginTop: 15, marginBottom: 0, paddingLeft: 15,
+          alignItems: 'flex-start', position: 'absolute', elevation: 1 }}>   
+          <Button
+            title=''
+            icon={<Icon name='menu' size={30} />}
+            onPress={this.toggleNavigation.bind(this)}
+            />
+         </View>
+      );
+    }
+  }
+
   renderDisplay() {
     const { email, user } = this.props;
     if(user) {
       return (
-      <View style={{ flex: 1 }}> 
-        <View style={{ height: 24, marginTop: 24, marginBottom: 4, paddingLeft: 16, alignItems: 'flex-start' }}>   
-          <Button
-            title=''
-            icon={<Icon name='menu' size={24} />}
-            onPress={this.toggleNavigation.bind(this)}
-            />
-         </View> 
-        <View style={{ height:600 }}>        
+      <View style={{ position: 'absolute', height: '100%', width: '100%', }}> 
+        <View style={{ height: '100%', width: '100%', position: 'absolute' }}>        
           <Routes />
-         </View> 
+        </View>
+        {this.renderHamburger()}         
       </View>
       );
     }
 
     return (
-      <Card>
-        <Header headerText="Take Me To Church" />
+    <View>
+      <Header headerText="Take Me To Church" />
+      <View style={{height: 100}} /> 
+      <Card>        
         <CardSection >
           <Input
             placeholder="user@gmail.com"
@@ -200,6 +214,7 @@ renderPassword() {
           {this.renderCreateButton()}
         </CardSection>
      </Card>
+    </View> 
   );
 
   }
@@ -221,7 +236,8 @@ const mapStateToProps = state => ({
   error: state.loginForm.error,
   showCreateUser: state.loginForm.showCreateUser,
   loading: state.loginForm.loading,
-  user: state.loginForm.user
+  user: state.loginForm.user,
+  drawerClosed: state.loginForm.drawerClosed
 });
 
 const styles = StyleSheet.create({

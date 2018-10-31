@@ -24,7 +24,10 @@ class ProfileChurchForm extends Component {
   };
 
   componentWillMount() {
-    this.props.loadProfileChurches();
+    if(!this.props.editChurchName)
+    {
+      this.props.loadProfileChurches();
+    }
   }
 
   churchLookUp() {
@@ -80,6 +83,7 @@ class ProfileChurchForm extends Component {
                 title=''
                 buttonStyle={{ backgroundColor: 'white',
                  marginRight: 10 }}
+                 disabled={this.props.editChurchName}
               />
             </View>
             <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>  
@@ -206,6 +210,7 @@ class ProfileChurchForm extends Component {
             icon={<Icon name='add' size={24} color='white' />}
             title='Add Church'
             onPress={this.churchLookUp.bind(this)}
+            disabled={this.props.editChurchName}
           />
         </View>
       </CardSection>
@@ -231,7 +236,7 @@ const mapStatesToProps = state => ({
   editChurchDefault: state.profileChurch.editChurchDefault || !state.profileChurch.myChurches,
   dropdowList: _.map(state.profileChurch.editChurchMassTimes,
    val => ( { value: val } )),
-  showDropDown: state.profileChurch.editChurchMassTimes.length,
+  showDropDown: state.profileChurch.editChurchMassTimes && state.profileChurch.editChurchMassTimes.length,
   isChecked: state.entities.profile.isChecked
 });
 

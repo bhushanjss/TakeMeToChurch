@@ -5,6 +5,7 @@ import _ from 'lodash';
 import { Card, Avatar, Text, Icon } from 'react-native-elements';
 import { loadProfile, loadProfileImage, editProfile } from '../actions/entities';
 import { uploadImage } from '../actions/forms';
+import { Header } from './common';
 
 class Profile extends Component {
 
@@ -109,7 +110,8 @@ class Profile extends Component {
     } = this.props;
     return (
       <ScrollView>
-        <Card>
+        <Header headerText="Profile" />
+        <Card>        
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'center' }}>
         { this.showProfileIcon() }
         </View>

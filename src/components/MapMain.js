@@ -128,7 +128,7 @@ const styles = StyleSheet.create({
     elevation: 1,
     width: '90%',
     height: 34,
-    marginTop: 10
+    marginTop: 70
   },
   input: {
     width: '99%',

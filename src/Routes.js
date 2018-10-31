@@ -48,6 +48,7 @@ const DrawerRoutes = {
 const RootStack = createDrawerNavigator(
   DrawerRoutes, {
     drawerWidth: 300,
+    drawerMarginTop: 60,
     initialRouteName: 'Profile',
     contentComponent: props => {
                 return (
@@ -65,5 +66,18 @@ const RootStack = createDrawerNavigator(
     backBehavior: 'none'
   }
 );
+
+const defaultGetStateForAction = RootStack.router.getStateForAction;
+RootStack.router.getStateForAction = (action, state) => {
+  switch (action.type) {      
+    case 'Navigation\/CLOSE_DRAWER':
+    case 'Navigation\/DRAWER_CLOSED':
+    console.log('closed');
+      break;
+    }
+
+  return defaultGetStateForAction(action, state);
+};
+  
 
 export default Routes;

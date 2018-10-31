@@ -29,7 +29,7 @@ export const toggleAccount = (val) => action(TOGGLE_ACCOUNT, val);
 export const loginUser = ({ email, password }) => (
    (dispatch) => {
     dispatch(action(LOGIN_USER));
-    return firebase.auth().signInWithEmailAndPassword(email, password)
+    return firebase.auth().signInAndRetrieveDataWithEmailAndPassword(email, password)
     .then(user => loginUserSuccess(dispatch, user))
     .catch(error => loginUserFailed(dispatch, error));
   }
@@ -47,7 +47,7 @@ export const logoutUser = () => (
 export const createUser = ({ email, password }) => (
   (dispatch) => {
    dispatch(action(CREATE_USER));
-   firebase.auth().createUserWithEmailAndPassword(email, password)
+   firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(email, password)
    .then(user => createUserSuccess(dispatch, user))
    .catch(error => loginUserFailed(dispatch, error));
  }

@@ -9,7 +9,8 @@ const INITIAL_STATE = {
   error: '',
   loading: false,
   showCreateUser: false,
-  user: null
+  user: null,
+  drawerClosed: false
 };
 
 export default (state = INITIAL_STATE, action) => {
@@ -46,6 +47,12 @@ export default (state = INITIAL_STATE, action) => {
         confirmPassword: '' };
     case RESET_LOGIN_FORM:
       return INITIAL_STATE;
+    case 'Navigation/OPEN_DRAWER':
+    case 'Navigation/DRAWER_OPENED':
+      return {...state, drawerClosed: false };  
+    case 'Navigation/CLOSE_DRAWER':
+    case 'Navigation/DRAWER_CLOSED':  
+      return {...state, drawerClosed: true };
     default:
       return state;
   }
