@@ -66,6 +66,10 @@ class ProfileChurchForm extends Component {
     this.props.saveProfileChurches(churches, isChecked);
   }
 
+  cancelProfileChurch() {
+    this.props.loadProfileChurches();
+  }
+
   churchItem = ({item}) => {
    return (
    <CardSection>
@@ -81,9 +85,8 @@ class ProfileChurchForm extends Component {
                 icon={<Icon name='edit' size={24} /> }
                 onPress={this.editChurchMassTime.bind(this, item.churchPlaceId)}
                 title=''
-                buttonStyle={{ backgroundColor: 'white',
-                 marginRight: 10 }}
-                 disabled={this.props.editChurchName}
+                buttonStyle={{ backgroundColor: 'white', marginRight: 10 }}
+                disabled={this.props.editChurchName ? true : false}
               />
             </View>
             <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'space-between' }}>  
@@ -148,10 +151,16 @@ class ProfileChurchForm extends Component {
           onPress={this.makeDefault.bind(this)}
           />
         <Button
+          style={{ paddingBottom:10 }}
           icon={<Icon name='save' size={24} color='white' />}
           title='SAVE'
           onPress={this.saveChurch.bind(this)}
-          />        
+          />    
+        <Button
+          icon={<Icon name='save' size={24} color='white' />}
+          title='CANCEL'
+          onPress={this.cancelProfileChurch.bind(this)}
+        />      
         </View>                    
       </View>       
     </CardSection> 
@@ -197,9 +206,9 @@ class ProfileChurchForm extends Component {
 
   render() {
     return (
-      <ScrollView>     
-      <Card >     
-      <Header headerText='My Church Times' />       
+      <ScrollView>    
+      <Header headerText='My Church Times' />   
+      <Card >
         {this.editChurch()}
       <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', padding: 10 }}>
         {this.renderChurchList()}
@@ -210,7 +219,7 @@ class ProfileChurchForm extends Component {
             icon={<Icon name='add' size={24} color='white' />}
             title='Add Church'
             onPress={this.churchLookUp.bind(this)}
-            disabled={this.props.editChurchName}
+            disabled={this.props.editChurchName ? true : false}
           />
         </View>
       </CardSection>

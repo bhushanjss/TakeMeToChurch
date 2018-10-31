@@ -32,7 +32,8 @@ export default (state = INITIAL_STATE, action) => {
 		case LOAD_PROFILE_CHURCH:
 			return { ...state, loading: true };
 		case LOAD_PROFILE_CHURCH_SUCCESS:
-			return { ...state, loading: false, myChurches: action.payload }	
+			return { ...state, loading: false, myChurches: action.payload, editChurchDefault: false, editChurchName: '', 
+				editChurchCity: '', editChurchMassTimes: [], editChurchPlaceId: '' };
 		case PLACE_DETAILS_SUCCESS:	
 		case CHURCH_MASS_DETAILS_SUCCESS:
 			const churchEdit = findElement(state.myChurches, action.payload.placeId, 'churchPlaceId');

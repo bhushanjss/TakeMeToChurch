@@ -5,7 +5,7 @@ import { Input, Icon, Button, CheckBox } from 'react-native-elements';
 import { firstNameChange, lastNameChange, phoneNumberChange, profileStreetChange,
   profileAptChange, profileCityChange, profileStateChange, profileZipChange,
   carModelChange, carSeatsChange, isProfileCheckboxChanged,
-  saveProfile } from '../actions/forms';
+  saveProfile, cancelProfile } from '../actions/forms';
 
 import { Card, CardSection, Header } from './common';
 
@@ -60,6 +60,10 @@ class ProfileForm extends Component {
         this.props.saveProfile({ firstName, lastName, phoneNumber, street, apt,
         city, state, zip, isChecked, profileId, churches });
       }
+  }
+
+  cancelProfile() {
+    this.props.cancelProfile();
   }
 
   showCarSection() {
@@ -181,9 +185,15 @@ class ProfileForm extends Component {
       <CardSection>
       <View style={{ flex: 1 }}>
       <Button
+        style={{ paddingBottom:10 }}
         icon={<Icon name='save' size={24} color='white' />}
         title='SAVE'
         onPress={this.saveProfile.bind(this)}
+      />
+      <Button
+        icon={<Icon name='save' size={24} color='white' />}
+        title='CANCEL'
+        onPress={this.cancelProfile.bind(this)}
       />
       </View>
       </CardSection>
@@ -228,5 +238,6 @@ export default connect(mapStateToProps, {
   carModelChange,
   carSeatsChange,
   isProfileCheckboxChanged,
-  saveProfile
+  saveProfile,
+  cancelProfile
 })(ProfileForm);

@@ -87,7 +87,7 @@ export const profileZipChange = (text) => action(PROFILE_ZIP_CHANGE, text);
 export const carModelChange = (text) => action(CAR_MODEL_CHANGE, text);
 export const carSeatsChange = (text) => action(CAR_SEATS_CHANGE, text);
 export const isProfileCheckboxChanged = (val) => action(PROFILE_CHECKBOX_CHECKED, val);
-
+export const cancelProfile = () => ( dispatch => NavigationService.navigate('Profile') );
 export const saveProfile = (profile, driver, isChecked) => (
   (dispatch) => {
     const { currentUser } = firebase.auth();
@@ -108,6 +108,7 @@ export const saveProfile = (profile, driver, isChecked) => (
     });
   }
 );
+
 
 const uploadingImage = (uri, mime = 'application/octet-stream') => (
   new Promise((resolve, reject) => {
