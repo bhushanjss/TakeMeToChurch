@@ -48,16 +48,16 @@ const DrawerRoutes = {
 const RootStack = createDrawerNavigator(
   DrawerRoutes, {
     drawerWidth: 300,
-    drawerMarginTop: 60,
     initialRouteName: 'Profile',
     contentComponent: props => {
                 return (
-                  <View style={{flex:1}}>                    
+                  <View style={{flex:1, marginTop: 55}}>                    
                     <DrawerItems {...props} />                    
                 </View>);
             },
     contentOptions: {
-        activeBackgroundColor: '#eee',        
+        activeBackgroundColor: '#eee',
+        activeItemKey: 'screen',
         labelStyle: {
             fontSize: 16            
         }
