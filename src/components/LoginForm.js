@@ -13,7 +13,7 @@ import { Button, Icon } from 'react-native-elements';
 import { Card, CardSection, Input, Spinner, Header } from './common';
 import Toast from './common/Toast';
 import { emailChange, passwordChange, resetLoginForm, loginUser, loginFacebook,
-   createUser, toggleAccount, confirmPasswordChange } from '../actions/forms';
+   createUser, toggleAccount, confirmPasswordChange, checkFBLogin } from '../actions/forms';
 import Routes from '../Routes';
 import ProfileForm from './ProfileForm';
 import NavigationService from '../NavigationService';
@@ -28,8 +28,6 @@ class LoginForm extends Component {
 	}
 
   onFacebookLogin(data) {
-    console.log("Logged in!");
-    console.log(data);
     this.props.loginFacebook(data.credentials.token);
   }
 
@@ -58,6 +56,10 @@ class LoginForm extends Component {
     NavigationService.toggleDrawer();
   }
 
+  componentWillMount() {
+    this.props.checkFBLogin();        
+  }
+
   renderButton() {
     const { loading, showCreateUser } = this.props;
 
@@ -77,17 +79,13 @@ class LoginForm extends Component {
         <Button title='Log In' onPress={this.onLoginButtonPress.bind(this)} />
 
         <FBLogin style={{ marginBottom: 10, marginTop: 10, flex: 1, alignSelf: 'center' }}
-        ref={(fbLogin) => { this.fbLogin = fbLogin }}
-        permissions={["public_profile", "email"]}
-        onLogin={this.onFacebookLogin.bind(this)}
-        onLogout={function(){
-          console.log("Logged out.");
-        }}
-        onError={function(data){
-          console.log("ERROR");
-          console.log(data);
-        }}
-      />
+          permissions={["public_profile", "email"]}
+          onLogin={this.onFacebookLogin.bind(this)}
+          onError={function(data){
+            console.log("ERROR");
+            console.log(data);
+          }}
+        />
        </View> 
     );
   }
@@ -267,5 +265,6 @@ export default connect(mapStateToProps, { emailChange,
   loginUser,
   loginFacebook,
   createUser,
-  toggleAccount
+  toggleAccount,
+  checkFBLogin
  })(LoginForm);

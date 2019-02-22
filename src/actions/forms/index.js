@@ -1,6 +1,7 @@
 import firebase from 'react-native-firebase';
 import { Platform } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
+import { FBLoginManager } from 'react-native-facebook-login';
 
 import NavigationService from '../../NavigationService';
 import action from '../action';
@@ -17,7 +18,7 @@ import { EMAIL_CHANGE, PASSWORD_CHANGE, CONFIRM_PASSWORD_CHANGE,
   UPLOAD_IMAGE_FAILED, PROFILE_SAVE_MASS_TIME, PROFILE_CHURCH_DELETE_MASS_TIME, PROFILE_SAVE_CHURCH,
   PROFILE_SAVE_CHURCH_SUCCESS, PROFILE_SAVE_CHURCH_FAILED, LOAD_PROFILE_CHURCH, 
   LOAD_PROFILE_CHURCH_SUCCESS, CHURCH_MASS_DETAILS_SUCCESS, CHURCH_MAKE_DEFAULT, LOGOUT_USER, 
-  LOGOUT_USER_SUCCESS, LOGOUT_USER_FAILED } from './types';
+  LOGOUT_USER_SUCCESS, LOGOUT_USER_FAILED, LOGIN_FACEBOOK_SUCCESS } from './types';
   import { UPDATE_PROFILE_IMAGE_URL } from '../entities/types';
 
 //login form
@@ -38,6 +39,7 @@ export const loginUser = ({ email, password }) => (
 export const logoutUser = () => (
   (dispatch) => {
     dispatch(action(LOGOUT_USER));
+    facebookLogOut();
       return firebase.auth().signOut()
       .then(() => dispatch(action(LOGOUT_USER_SUCCESS)))
       .catch(error => dispatch(action(LOGOUT_USER_FAILED, error)));
@@ -55,17 +57,48 @@ export const createUser = ({ email, password }) => (
 
 export const loginFacebook = (token) => (
   (dispatch) => {
-    dispatch(action(LOGIN_USER));
-    const credential = firebase.auth.FacebookAuthProvider.credential(token);
-    firebase.auth().signInAndRetrieveDataWithCredential(credential)
-    .then(user => loginUserSuccess(dispatch, user))
-    .catch(error => loginUserFailed(dispatch, error));
+    loginFacebookCall(dispatch, token);
   }
 );
+
+export const checkFBLogin = () => (
+  (dispatch) => {
+    FBLoginManager.getCredentials( (err, data) => {
+      if(data && data.credentials) {
+        loginFacebookCall(dispatch, data.credentials.token);
+      }
+    });    
+  }
+ );  
+
+const loginFacebookCall = (dispatch, token) => {
+  dispatch(action(LOGIN_USER));
+  const credentials = firebase.auth.FacebookAuthProvider.credential(token);
+  firebase.auth().signInAndRetrieveDataWithCredential(credentials)
+  .then(user => loginFacebookSuccess(dispatch, user))
+  .catch(error => loginUserFailed(dispatch, error));
+}
+
+const facebookLogOut = () => {
+  FBLoginManager.getCredentials( (err, data) => {
+    if(data && data.credentials) {
+      FBLoginManager.logout( (err, data) => {
+        console.log('logout success');
+      });
+    }
+  });
+}
 
 const loginUserSuccess = (dispatch, user) => {
   dispatch(action(LOGIN_USER_SUCCESS, user));
 };
+
+const loginFacebookSuccess = (dispatch, data) => {
+  console.log(data.user);
+  dispatch(action(LOGIN_FACEBOOK_SUCCESS, data.user));
+  dispatch(action(UPDATE_PROFILE_IMAGE_URL, data.user['photoURL']));
+}
+
 
 const createUserSuccess = (dispatch, user) => {
   dispatch(action(CREATE_USER_SUCCESS, user));
