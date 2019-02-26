@@ -4,7 +4,8 @@ import action from '../action';
 import NavigationService from '../../NavigationService';
 
 import { LOAD_PROFILE, LOAD_PROFILE_SUCCESS, LOAD_PROFILE_FAILED,
-  LOAD_DRIVER, EDIT_PROFILE, LOAD_DRIVER_SUCCESS, LOAD_DRIVER_FAILED, UPDATE_PROFILE_IMAGE_URL } from './types';
+  LOAD_DRIVER, EDIT_PROFILE, LOAD_DRIVER_SUCCESS, LOAD_DRIVER_FAILED, 
+  UPDATE_PROFILE_IMAGE_URL, GET_DRIVERS, GET_DRIVERS_SUCCESS, GET_DRIVERS_FAILED } from './types';
 
 export const loadProfile = () => (
   (dispatch) => {
@@ -43,6 +44,17 @@ export const loadDrivers = () => (
     });
   }
 );
+
+export const getDrivers = (churchId) => (
+  (dispatch) => {
+    dispatch(action(GET_DRIVERS));
+    firebase.database().ref('/drivers')
+    .on('value', snap => {
+      dispatch(action(GET_DRIVERS_SUCCESS, snap.val()));
+        NavigationService.navigate('Drivers');
+    });
+  }
+ );
 
 export const editProfile = (profile) => (
   (dispatch) => {

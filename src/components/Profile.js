@@ -72,7 +72,7 @@ class Profile extends Component {
     if(defaultChurch) {
       return (
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', padding: 10 }}>
-          <Icon name='home' />
+          <Icon name='place' />
           <View style={{ paddingLeft: 30 }}>
             <Text>{defaultChurch.churchName}</Text>
             <View style={{ flex: 1, flexDirection: 'column', justifyContent: 'flex-start' }}>
@@ -95,7 +95,7 @@ class Profile extends Component {
     const { isChecked, carModel, carSeats } = this.props;
     if(isChecked) {
       return (<View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', padding: 10 }}>
-          <Icon name='train' />
+          <Icon name='drive-eta' />
           <View style={{ paddingLeft: 30 }}>
             <Text>{carModel}</Text>
             <Text>{carSeats} Seats</Text>

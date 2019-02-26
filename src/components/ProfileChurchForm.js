@@ -8,6 +8,7 @@ import DatePicker from 'react-native-datepicker';
 
 import { churchLookUp, profileAddMassDropdown, profileChurchDeleteMassTime,
  saveProfileChurches, loadProfileChurches, editChurchMass, profileChurchMakeDefault } from '../actions/forms/';
+ import { getDrivers } from '../actions/entities';
 
 import { Card, CardSection, Header } from './common';
 class ProfileChurchForm extends Component {
@@ -50,6 +51,10 @@ class ProfileChurchForm extends Component {
     this.props.editChurchMass(placeId);
   }
 
+  getDrivers(placeId) {
+    this.props.getDrivers(placeId);
+  }
+
   saveChurch() {
     const { myChurches, editChurchName, editChurchCity, selectedMassTimes, editChurchDefault, 
       editChurchPlaceId, isChecked } 
@@ -81,6 +86,13 @@ class ProfileChurchForm extends Component {
           <View style={{ flex: 1, paddingBottom: 5, justifyContent: 'flex-start' }}>
             <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
               <Text style={{ fontWeight: '500', paddingTop: 5, paddingBottom: 5 }}>Mass Time:</Text>
+              <Button
+                  title=''
+                  style={{ paddingLeft: 10}}
+                  buttonStyle={{ backgroundColor: 'white', marginRight: 10 }}
+                  icon={<Icon name='drive-eta' size={24} />}
+                  onPress={this.getDrivers.bind(this, item.churchPlaceId)}
+              />
               <Button
                 icon={<Icon name='edit' size={24} /> }
                 onPress={this.editChurchMassTime.bind(this, item.churchPlaceId)}
@@ -257,5 +269,6 @@ export default connect(mapStatesToProps, {
   saveProfileChurches, 
   loadProfileChurches,
   editChurchMass,
-  profileChurchMakeDefault
+  profileChurchMakeDefault,
+  getDrivers
 })(ProfileChurchForm);

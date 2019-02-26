@@ -17,7 +17,7 @@ const ChurchItem = ({item}) => (
             renderItem={(val) => (
               <View style={{ flex: 1, paddingTop: 5, paddingBottom: 5, flexDirection: 'row',
                justifyContent: 'space-between' }}>
-                <Text>{val.item}</Text>
+                <Text>{val.item}</Text>                
                 <Button
                   title=''
                   style={{ paddingLeft: 10}}
