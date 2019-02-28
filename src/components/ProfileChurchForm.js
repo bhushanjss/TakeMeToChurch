@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { View, ScrollView, StyleSheet, FlatList } from 'react-native';
-import { Input, Icon, Button, Text } from 'react-native-elements';
+import { Input, Icon, Button, Text, CheckBox } from 'react-native-elements';
 import { Dropdown } from 'react-native-material-dropdown';
 import DatePicker from 'react-native-datepicker';
 
 import { churchLookUp, profileAddMassDropdown, profileChurchDeleteMassTime,
- saveProfileChurches, loadProfileChurches, editChurchMass, profileChurchMakeDefault } from '../actions/forms/';
+ saveProfileChurches, loadProfileChurches, editChurchMass, profileChurchMakeDefault,
+ profileChurchDriveDefault } from '../actions/forms/';
  import { getDrivers } from '../actions/entities';
 
 import { Card, CardSection, Header } from './common';
@@ -47,6 +48,10 @@ class ProfileChurchForm extends Component {
     this.props.profileChurchMakeDefault();    
   }
 
+  profileChurchDriveDefault() {
+    this.props.profileChurchDriveDefault(!this.props.driveDefault);
+  }
+
   editChurchMassTime(placeId) {
     this.props.editChurchMass(placeId);
   }
@@ -68,7 +73,7 @@ class ProfileChurchForm extends Component {
     };
     const churches = myChurches ? ( editChurchDefault ? [church, ...myChurches] : 
       [ ...myChurches, church]) : [church];
-    this.props.saveProfileChurches(churches, isChecked);
+    this.props.saveProfileChurches(churches, isChecked, editChurchPlaceId);
   }
 
   cancelProfileChurch() {
@@ -154,6 +159,7 @@ class ProfileChurchForm extends Component {
           </View>       
         </View> 
         { this.massDropDown() }
+        {this.checkDrive()}  
         <View style={{ flex: 1, paddingLeft: 10, paddingRight: 10 }}>
         <Button
           style={{ paddingBottom:10 }}
@@ -167,7 +173,7 @@ class ProfileChurchForm extends Component {
           icon={<Icon name='save' size={24} color='white' />}
           title='SAVE'
           onPress={this.saveChurch.bind(this)}
-          />    
+          />                 
         <Button
           icon={<Icon name='save' size={24} color='white' />}
           title='CANCEL'
@@ -179,6 +185,21 @@ class ProfileChurchForm extends Component {
    );
     }
   };
+
+  checkDrive() {
+    const { isChecked, driveDefault } = this.props;
+    if(isChecked) {
+      return (
+      <View style={{flex: 1}}>
+        <CheckBox containerStyle={{ backgroundColor: '#fff', flex: 1, flexDirection: 'row' }}
+           title='Drive' checked={driveDefault}
+           onPress={this.profileChurchDriveDefault.bind(this)}
+          /> 
+      </View>  
+     );
+    }    
+  }
+    
 
   massDropDown() {
     const { dropdowList, showDropDown } = this.props;
@@ -258,7 +279,8 @@ const mapStatesToProps = state => ({
   dropdowList: _.map(state.profileChurch.editChurchMassTimes,
    val => ( { value: val } )),
   showDropDown: state.profileChurch.editChurchMassTimes && state.profileChurch.editChurchMassTimes.length,
-  isChecked: state.entities.profile.isChecked
+  isChecked: state.entities.profile.isChecked,
+  driveDefault: state.profileChurch.driveDefault
 });
 
 
@@ -270,5 +292,6 @@ export default connect(mapStatesToProps, {
   loadProfileChurches,
   editChurchMass,
   profileChurchMakeDefault,
+  profileChurchDriveDefault,
   getDrivers
 })(ProfileChurchForm);

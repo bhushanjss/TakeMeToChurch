@@ -1,6 +1,6 @@
 import { PROFILE_SAVE_MASS_TIME, PROFILE_CHURCH_DELETE_MASS_TIME, PROFILE_SAVE_CHURCH, 
 	PROFILE_SAVE_CHURCH_SUCCESS, LOAD_PROFILE_CHURCH, LOAD_PROFILE_CHURCH_SUCCESS, 
-	CHURCH_MASS_DETAILS_SUCCESS, CHURCH_MAKE_DEFAULT } from '../actions/forms/types';
+	CHURCH_MASS_DETAILS_SUCCESS, CHURCH_MAKE_DEFAULT, CHURCH_DRIVE_DEFAULT } from '../actions/forms/types';
 import { PLACE_DETAILS_SUCCESS } from '../actions/services/types';
 import { removeElement, findElement, removeElementsArray, unsetDefaultValues } from '../util/util';
 
@@ -12,6 +12,7 @@ const INITIAL_STATE = {
 	editChurchMassTimes: [],
 	editChurchPlaceId: '',
 	editChurchDefault: false,
+	driveDefault: false,
 	error: '',
 	loading: false
 }
@@ -52,7 +53,9 @@ export default (state = INITIAL_STATE, action) => {
 				};
 			}
 		case CHURCH_MAKE_DEFAULT:
-			return { ...state, myChurches: unsetDefaultValues(state.myChurches, 'churchDefault'), editChurchDefault: true }				 				
+			return { ...state, myChurches: unsetDefaultValues(state.myChurches, 'churchDefault'), editChurchDefault: true }	
+		case CHURCH_DRIVE_DEFAULT:
+			return { ...state, driveDefault: action.payload };			 				
 		default:
 		 	return state;
 	}

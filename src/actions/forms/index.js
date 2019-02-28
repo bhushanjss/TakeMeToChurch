@@ -18,7 +18,7 @@ import { EMAIL_CHANGE, PASSWORD_CHANGE, CONFIRM_PASSWORD_CHANGE,
   UPLOAD_IMAGE_FAILED, PROFILE_SAVE_MASS_TIME, PROFILE_CHURCH_DELETE_MASS_TIME, PROFILE_SAVE_CHURCH,
   PROFILE_SAVE_CHURCH_SUCCESS, PROFILE_SAVE_CHURCH_FAILED, LOAD_PROFILE_CHURCH, 
   LOAD_PROFILE_CHURCH_SUCCESS, CHURCH_MASS_DETAILS_SUCCESS, CHURCH_MAKE_DEFAULT, LOGOUT_USER, 
-  LOGOUT_USER_SUCCESS, LOGOUT_USER_FAILED, LOGIN_FACEBOOK_SUCCESS } from './types';
+  LOGOUT_USER_SUCCESS, LOGOUT_USER_FAILED, LOGIN_FACEBOOK_SUCCESS, CHURCH_DRIVE_DEFAULT } from './types';
   import { UPDATE_PROFILE_IMAGE_URL } from '../entities/types';
 
 //login form
@@ -220,7 +220,7 @@ export const loadProfileChurches = () => (
     });
   }
 );
-export const saveProfileChurches = (churches, isChecked) => (
+export const saveProfileChurches = (churches, isChecked, placeId) => (
   (dispatch) => {
     const { currentUser } = firebase.auth();
     dispatch(action(PROFILE_SAVE_CHURCH));
@@ -230,8 +230,8 @@ export const saveProfileChurches = (churches, isChecked) => (
       dispatch(action(PROFILE_SAVE_CHURCH_SUCCESS, churches));
       if (isChecked) {
         dispatch(action(SAVE_DRIVER));
-        firebase.database().ref(`/drivers/${currentUser.uid}/churches`)
-        .set(churches)
+        firebase.database().ref(`/churches/${placeId}/drivers/${currentUser.uid}`)
+        .set(true)
         .then(() => {
           dispatch(action(SAVE_DRIVER_SUCCESS));
         });
@@ -250,3 +250,4 @@ export const editChurchMass = (placeId) => (
 );
 
 export const profileChurchMakeDefault = () => action(CHURCH_MAKE_DEFAULT);
+export const profileChurchDriveDefault = (val) => action(CHURCH_DRIVE_DEFAULT, val);
