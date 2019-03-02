@@ -28,7 +28,7 @@ class LoginForm extends Component {
 	}
 
   onFacebookLogin(data) {
-    this.props.loginFacebook(data.credentials.token);
+    this.props.loginFacebook(data);
   }
 
   onCreateUserButtonPress() {

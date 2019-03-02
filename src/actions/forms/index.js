@@ -56,35 +56,52 @@ export const createUser = ({ email, password }) => (
    dispatch(action(CREATE_USER));
    Auth.signUp({
      username: email,
-     password: password
+     password: password,
+     attributes: { email }
    })
    .then( user => createUserSuccess(dispatch, user))
    .catch(error => loginUserFailed(dispatch, errror));
  }
 );
 
-export const loginFacebook = (token) => (
+export const loginFacebook = (data) => (
   (dispatch) => {
-    loginFacebookCall(dispatch, token);
+    loginFacebookCall(dispatch, data);
   }
 );
 
 export const checkFBLogin = () => (
   (dispatch) => {
-    FBLoginManager.getCredentials( (err, data) => {
-      if(data && data.credentials) {
-        loginFacebookCall(dispatch, data.credentials.token);
-      }
-    });    
+    // FBLoginManager.getCredentials( (err, data) => {
+    //   if(data && data.credentials) {
+    //     loginFacebookCall(dispatch, data);
+    //   }
+    // });    
   }
  );  
 
-const loginFacebookCall = (dispatch, token) => {
+const loginFacebookCall = (dispatch, data) => {
   dispatch(action(LOGIN_USER));
-  const credentials = firebase.auth.FacebookAuthProvider.credential(token);
-  firebase.auth().signInAndRetrieveDataWithCredential(credentials)
-  .then(user => loginFacebookSuccess(dispatch, user))
-  .catch(error => loginUserFailed(dispatch, error));
+  const provider = 'facebook';
+  const { token, tokenExpirationDate, userId } = data.credentials;
+  const user = {
+    userId
+  };
+
+  Auth.federatedSignIn(provider, {
+    token,
+    tokenExpirationDate
+  }, user)
+  .then( credentials => 
+    console.log(credentials))
+  .catch( error => 
+    console.log(error));
+
+
+  // const credentials = firebase.auth.FacebookAuthProvider.credential(token);
+  // firebase.auth().signInAndRetrieveDataWithCredential(credentials)
+  // .then(user => loginFacebookSuccess(dispatch, user))
+  // .catch(error => loginUserFailed(dispatch, error));
 }
 
 const facebookLogOut = () => {

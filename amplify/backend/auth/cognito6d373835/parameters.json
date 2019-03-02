@@ -1,7 +1,7 @@
 {
     "identityPoolName": "cognito6d373835_identitypool_6d373835",
     "allowUnauthenticatedIdentities": false,
-    "thirdPartyAuth": false,
+    "thirdPartyAuth": true,
     "lambdaLogPolicy": "cognito6d373835_lambda_log_policy",
     "openIdLambdaRoleName": "cognito6d373835_openid_lambda_role",
     "openIdRolePolicy": "cognito6d373835_openid_pass_role_policy",
@@ -11,9 +11,10 @@
     "autoVerifiedAttributes": [
         "email"
     ],
-    "mfaConfiguration": "OFF",
+    "mfaConfiguration": "OPTIONAL",
     "mfaTypes": [
-        "SMS Text Message"
+        "SMS Text Message",
+        "TOTP"
     ],
     "roleName": "cognito6d373835_sns-role",
     "roleExternalId": "cognito6d373835_role_external_id",
@@ -22,7 +23,7 @@
     "smsVerificationMessage": "Your verification code is {####}",
     "emailVerificationSubject": "Your verification code",
     "emailVerificationMessage": "Your verification code is {####}",
-    "defaultPasswordPolicy": false,
+    "defaultPasswordPolicy": true,
     "passwordPolicyMinLength": 8,
     "passwordPolicyCharacters": [
         "Requires Lowercase",
@@ -46,8 +47,8 @@
     "userpoolClientLambdaRole": "cognito6d373835_userpoolclient_lambda_role",
     "userpoolClientLogPolicy": "cognito6d373835_userpoolclient_lambda_log_policy",
     "userpoolClientLambdaPolicy": "cognito6d373835_userpoolclient_lambda_iam_policy",
-    "userpoolClientSetAttributes": false,
-    "useDefault": "default",
+    "userpoolClientSetAttributes": true,
+    "useDefault": "manual",
     "resourceName": "cognito6d373835",
     "authSelections": "identityPoolAndUserPool",
     "authRoleName": {
@@ -67,5 +68,12 @@
             "UnauthRole",
             "Arn"
         ]
-    }
+    },
+    "authProviders": [
+        "graph.facebook.com"
+    ],
+    "userpoolClientWriteAttributes": [
+        "email"
+    ],
+    "selectedParties": "{\"graph.facebook.com\":\"1209519675925142\"}"
 }
