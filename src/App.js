@@ -4,14 +4,17 @@ import { Provider } from 'react-redux';
 
 import LoginForm from './components/LoginForm';
 import configureStore from './configureStore';
+import Amplify from 'aws-amplify';
 
 import fireBaseKey from '../secretkey';
+import awsConfig from '../aws-exports';
 
 const store = configureStore();
+Amplify.configure(awsConfig);
 
-export default class App extends Component {
+class App extends Component {
   componentWillMount() {
-}
+  }
 
   render() {
     return (
@@ -24,3 +27,4 @@ export default class App extends Component {
   }
 }
 
+export default App;

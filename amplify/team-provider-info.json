@@ -1,0 +1,19 @@
+{
+    "dev": {
+        "awscloudformation": {
+            "AuthRoleName": "takemetochurch-20190302135715-authRole",
+            "UnauthRoleArn": "arn:aws:iam::335603648567:role/takemetochurch-20190302135715-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::335603648567:role/takemetochurch-20190302135715-authRole",
+            "Region": "us-east-1",
+            "DeploymentBucketName": "takemetochurch-20190302135715-deployment",
+            "UnauthRoleName": "takemetochurch-20190302135715-unauthRole",
+            "StackName": "takemetochurch-20190302135715",
+            "StackId": "arn:aws:cloudformation:us-east-1:335603648567:stack/takemetochurch-20190302135715/1693df60-3cf3-11e9-b809-123ad236a92a"
+        },
+        "categories": {
+            "auth": {
+                "cognito6d373835": {}
+            }
+        }
+    }
+}

@@ -1,10 +1,13 @@
 import firebase from 'react-native-firebase';
+import Auth from '@aws-amplify/auth';
+import Analytics from '@aws-amplify/analytics';
 import { Platform } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { FBLoginManager } from 'react-native-facebook-login';
 
 import NavigationService from '../../NavigationService';
 import action from '../action';
+
 import { EMAIL_CHANGE, PASSWORD_CHANGE, CONFIRM_PASSWORD_CHANGE,
   LOGIN_USER_SUCCESS, LOGIN_USER_FAILED, LOGIN_USER, CREATE_USER, CREATE_USER_SUCCESS,
   TOGGLE_ACCOUNT, FIRST_NAME_CHANGE, LAST_NAME_CHANGE, PHONE_NUMBER_CHANGE, PROFILE_STREET_CHANGE,
@@ -30,9 +33,11 @@ export const toggleAccount = (val) => action(TOGGLE_ACCOUNT, val);
 export const loginUser = ({ email, password }) => (
    (dispatch) => {
     dispatch(action(LOGIN_USER));
-    return firebase.auth().signInAndRetrieveDataWithEmailAndPassword(email, password)
-    .then(user => loginUserSuccess(dispatch, user))
-    .catch(error => loginUserFailed(dispatch, error));
+    Auth.signIn(email, password)
+    .then( user => loginUserSuccess(dispatch, user))
+    .catch( error => 
+      console.log(error => loginUserFailed(dispatch, error))
+    );
   }
 );
 
@@ -40,8 +45,8 @@ export const logoutUser = () => (
   (dispatch) => {
     dispatch(action(LOGOUT_USER));
     facebookLogOut();
-      return firebase.auth().signOut()
-      .then(() => dispatch(action(LOGOUT_USER_SUCCESS)))
+    Auth.signOut()
+      .then((data) => dispatch(action(LOGOUT_USER_SUCCESS)))
       .catch(error => dispatch(action(LOGOUT_USER_FAILED, error)));
   }
 );
@@ -49,9 +54,12 @@ export const logoutUser = () => (
 export const createUser = ({ email, password }) => (
   (dispatch) => {
    dispatch(action(CREATE_USER));
-   firebase.auth().createUserAndRetrieveDataWithEmailAndPassword(email, password)
-   .then(user => createUserSuccess(dispatch, user))
-   .catch(error => loginUserFailed(dispatch, error));
+   Auth.signUp({
+     username: email,
+     password: password
+   })
+   .then( user => createUserSuccess(dispatch, user))
+   .catch(error => loginUserFailed(dispatch, errror));
  }
 );
 

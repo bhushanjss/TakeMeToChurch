@@ -4,7 +4,7 @@ import { EMAIL_CHANGE, PASSWORD_CHANGE, CONFIRM_PASSWORD_CHANGE, LOGIN_USER, LOG
 
 const INITIAL_STATE = {
   email: 'abc@c.com',
-  password: '123456',
+  password: 'Abcdefgh@1',
   confirmPassword: '',
   error: '',
   loading: false,
