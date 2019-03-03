@@ -129,14 +129,14 @@ Parameters:
                                                           
   authProviders:
     Type: CommaDelimitedList
-      
-  facebookAppId:
-    Type: String
-                  
+            
   userpoolClientWriteAttributes:
     Type: CommaDelimitedList
       
   selectedParties:
+    Type: String
+            
+  facebookAppId:
     Type: String
           
 Conditions:

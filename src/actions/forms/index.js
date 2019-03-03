@@ -1,6 +1,7 @@
 import firebase from 'react-native-firebase';
 import Auth from '@aws-amplify/auth';
 import Analytics from '@aws-amplify/analytics';
+import API from '@aws-amplify/api';
 import { Platform } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { FBLoginManager } from 'react-native-facebook-login';
@@ -115,6 +116,13 @@ const facebookLogOut = () => {
 }
 
 const loginUserSuccess = (dispatch, user) => {
+  const apiName = 'tmtc';
+  const path = '/drivers';
+  API.get(apiName, path)
+   .then( res => 
+     console.log(res))
+   .catch( error =>
+     console.log(error));
   dispatch(action(LOGIN_USER_SUCCESS, user));
 };
 

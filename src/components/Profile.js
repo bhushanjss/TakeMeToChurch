@@ -16,7 +16,7 @@ class Profile extends Component {
   };
 
   componentWillMount() {
-    this.props.loadProfileImage();
+    // this.props.loadProfileImage();
     this.props.loadProfile();
   }
 

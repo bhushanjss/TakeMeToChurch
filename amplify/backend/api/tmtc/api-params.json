@@ -1,0 +1,52 @@
+{
+    "paths": [
+        {
+            "name": "/profiles",
+            "lambdaFunction": "tmtc",
+            "privacy": {
+                "private": true,
+                "auth": "rw"
+            }
+        },
+        {
+            "name": "/churches",
+            "lambdaFunction": "tmtc",
+            "privacy": {
+                "private": true,
+                "auth": "rw"
+            }
+        },
+        {
+            "name": "/drivers",
+            "lambdaFunction": "tmtc",
+            "privacy": {
+                "protected": true,
+                "auth": "rw",
+                "unauth": "r"
+            }
+        }
+    ],
+    "resourceName": "tmtc",
+    "apiName": "tmtc",
+    "functionArns": [
+        {
+            "lambdaFunction": "tmtc"
+        }
+    ],
+    "privacy": {
+        "auth": 3,
+        "unauth": 1,
+        "authRoleName": "takemetochurch-20190302135715-authRole",
+        "unAuthRoleName": "takemetochurch-20190302135715-unauthRole"
+    },
+    "dependsOn": [
+        {
+            "category": "function",
+            "resourceName": "tmtc",
+            "attributes": [
+                "Name",
+                "Arn"
+            ]
+        }
+    ]
+}

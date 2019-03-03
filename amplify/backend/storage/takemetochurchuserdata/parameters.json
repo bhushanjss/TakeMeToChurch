@@ -1,0 +1,13 @@
+{
+    "bucketName": "takemetochurch8aa26ccf847243d4867460b8422a3dec",
+    "authPolicyName": "s3_amplify_5966c6c0",
+    "unauthPolicyName": "s3_amplify_5966c6c0",
+    "authRoleName": {
+        "Ref": "AuthRoleName"
+    },
+    "unauthRoleName": {
+        "Ref": "UnauthRoleName"
+    },
+    "authPermissions": "rw",
+    "unauthPermissions": ""
+}
