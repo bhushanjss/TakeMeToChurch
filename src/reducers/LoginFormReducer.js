@@ -2,6 +2,8 @@ import { EMAIL_CHANGE, PASSWORD_CHANGE, CONFIRM_PASSWORD_CHANGE, LOGIN_USER, LOG
  LOGIN_USER_FAILED, CREATE_USER, CREATE_USER_SUCCESS, RESET_LOGIN_FORM, TOGGLE_ACCOUNT,
  SAVE_PROFILE_SUCCESS, LOGOUT_USER, LOGOUT_USER_SUCCESS, LOGOUT_USER_FAILED, LOGIN_FACEBOOK_SUCCESS } from '../actions/forms/types';
 
+import { getUserId } from '../util/util';
+
 const INITIAL_STATE = {
   email: 'abc@c.com',
   password: 'Abcdefg@1',
@@ -26,7 +28,7 @@ export default (state = INITIAL_STATE, action) => {
     case LOGOUT_USER:
       return { ...state, loading: true };
     case LOGIN_USER_SUCCESS:
-      return { ...state, user: action.payload, error: '', loading: false };
+      return { ...state, user: action.payload, userId: getUserId(action.payload) , error: '', loading: false };
     case LOGIN_FACEBOOK_SUCCESS:
       return { ...state, loading: false, user: action.payload } 
     case LOGIN_USER_FAILED:
@@ -38,7 +40,7 @@ export default (state = INITIAL_STATE, action) => {
     case LOGOUT_USER_SUCCESS:
       return { ...state, user: null, loading: false };          
     case CREATE_USER_SUCCESS:
-      return { ...state, user: action.payload, error: '', loading: false };
+      return { ...state, user: action.payload, error: '', userId: getUserId(action.payload), loading: false };
     case SAVE_PROFILE_SUCCESS:
       return { ...state, createUserDetailsPending: false };     
     case TOGGLE_ACCOUNT:

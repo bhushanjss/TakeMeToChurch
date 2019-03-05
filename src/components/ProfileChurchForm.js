@@ -280,7 +280,8 @@ const mapStatesToProps = state => ({
    val => ( { value: val } )),
   showDropDown: state.profileChurch.editChurchMassTimes && state.profileChurch.editChurchMassTimes.length,
   isChecked: state.entities.profile.isChecked,
-  driveDefault: state.profileChurch.driveDefault
+  driveDefault: state.profileChurch.driveDefault,
+  userId: state.loginForm.userId
 });
 
 

@@ -235,7 +235,8 @@ const mapStateToProps = state => ({
   showCreateUser: state.loginForm.showCreateUser,
   loading: state.loginForm.loading,
   user: state.loginForm.user,
-  drawerClosed: state.loginForm.drawerClosed
+  drawerClosed: state.loginForm.drawerClosed,
+  userId: state.loginForm.userId
 });
 
 const styles = StyleSheet.create({

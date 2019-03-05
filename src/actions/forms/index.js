@@ -1,7 +1,7 @@
 import firebase from 'react-native-firebase';
 import Auth from '@aws-amplify/auth';
-import Analytics from '@aws-amplify/analytics';
 import API from '@aws-amplify/api';
+import Analytics from '@aws-amplify/analytics';
 import { Platform } from 'react-native';
 import ImagePicker from 'react-native-image-picker';
 import { FBLoginManager } from 'react-native-facebook-login';
@@ -30,6 +30,7 @@ export const emailChange = (text) => action(EMAIL_CHANGE, text);
 export const passwordChange = (text) => action(PASSWORD_CHANGE, text);
 export const confirmPasswordChange = (text) => action(CONFIRM_PASSWORD_CHANGE, text);
 export const toggleAccount = (val) => action(TOGGLE_ACCOUNT, val);
+const apiName = 'tmtc';
 
 export const loginUser = ({ email, password }) => (
    (dispatch) => {
@@ -115,14 +116,7 @@ const facebookLogOut = () => {
   });
 }
 
-const loginUserSuccess = (dispatch, user) => {
-  const apiName = 'tmtc';
-  const path = '/drivers';
-  API.get(apiName, path)
-   .then( res => 
-     console.log(res))
-   .catch( error =>
-     console.log(error));
+const loginUserSuccess = (dispatch, user) => {  
   dispatch(action(LOGIN_USER_SUCCESS, user));
 };
 
@@ -154,24 +148,24 @@ export const carModelChange = (text) => action(CAR_MODEL_CHANGE, text);
 export const carSeatsChange = (text) => action(CAR_SEATS_CHANGE, text);
 export const isProfileCheckboxChanged = (val) => action(PROFILE_CHECKBOX_CHECKED, val);
 export const cancelProfile = () => ( dispatch => NavigationService.navigate('Profile') );
+
 export const saveProfile = (profile, driver, isChecked) => (
   (dispatch) => {
-    const { currentUser } = firebase.auth();
+    const payload = { 
+      headers: { 'Content-Type': 'application/json'},
+      body: profile 
+    };
+    
     dispatch(action(SAVE_PROFILE));
-    firebase.database().ref(`/profiles/${currentUser.uid}`)
-    .set(profile)
-    .then(() => {
-      dispatch(action(SAVE_PROFILE_SUCCESS));
-      if (isChecked) {
-        dispatch(action(SAVE_DRIVER));
-        firebase.database().ref(`/drivers/${currentUser.uid}`)
-        .set(driver)
-        .then(() => {
-          dispatch(action(SAVE_DRIVER_SUCCESS));
-        });
-      }
-      NavigationService.navigate('Profile');
-    });
+    API.post(apiName, `/profiles`, payload)
+    .then((res) => {
+            dispatch(action(SAVE_PROFILE_SUCCESS, res.body));  
+            // if(isChecked) {
+            //   dispatch(action(SAVE_DRIVER));
+            // }
+            NavigationService.navigate('Profile');   
+          }).catch( error => 
+       dispatch(action(SAVE_PROFILE_FAILED, error)));
   }
 );
 

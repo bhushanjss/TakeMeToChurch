@@ -30,3 +30,8 @@ export const unsetDefaultValues = (arr, key) => (
 		return obj;
 	})
 );
+
+export const getUserId = (user) => (
+	user && user.signInUserSession && user.signInUserSession.idToken && 
+	user.signInUserSession.idToken.payload ? user.signInUserSession.idToken.payload.sub : null
+)

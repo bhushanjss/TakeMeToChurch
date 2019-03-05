@@ -16,8 +16,8 @@ class Profile extends Component {
   };
 
   componentWillMount() {
-    // this.props.loadProfileImage();
-    this.props.loadProfile();
+    // this.props.loadProfileImage(this.props.userId);
+    this.props.loadProfile(this.props.userId);
   }
 
   pickImage() {
@@ -155,7 +155,8 @@ const mapStateToProps = state => {
     carSeats: profile.carSeats,
     isChecked: profile.isChecked,
     profileImgUrl: state.entities.profileImgUrl,
-    defaultChurch: profile.churches ? profile.churches[0] : null 
+    defaultChurch: profile.churches ? profile.churches[0] : null,
+    userId: state.loginForm.userId 
   };
 };
 
